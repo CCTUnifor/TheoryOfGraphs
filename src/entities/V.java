@@ -3,6 +3,7 @@ package entities;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import enums.Colors;
 import exceptions.InvalidEdgeException;
 import exceptions.InvalidVertexException;
 import interfaces.IEdge;
@@ -14,11 +15,18 @@ public class V<T> implements IVertex<T> {
 	private String label;
 	private int positionArray;
 	private T data;
+	
+	private Colors color;
+	private IVertex<T> ancestor;
+	private int timeStart;
+	private int timeFinish;
 
 	public V(String label, T data) {
 		this.adjacenteEdges = new LinkedHashSet<IEdge<?>>();
 		this.label = label;
 		this.data = data;
+		
+		this.initializeProperties();
 	}
 
 	public V(int positionArray, String label, T data) {
@@ -26,8 +34,17 @@ public class V<T> implements IVertex<T> {
 		this.label = label;
 		this.positionArray = positionArray;
 		this.data = data;
+		
+		this.initializeProperties();
 	}
 
+	private void initializeProperties(){
+		this.color = Colors.WHITE;
+		this.ancestor = null;
+		this.timeStart = Integer.MAX_VALUE;
+		this.timeFinish = Integer.MAX_VALUE;
+	}
+	
 	@Override
 	public String getLabel() {
 		return this.label;
@@ -114,6 +131,46 @@ public class V<T> implements IVertex<T> {
 
 		return false;
 
+	}
+
+	@Override
+	public Colors getColor() {
+		return this.color;
+	}
+
+	@Override
+	public void setColor(Colors color) {
+		this.color = color;
+	}
+
+	@Override
+	public IVertex<T> getAncestor() {
+		return this.ancestor;
+	}
+
+	@Override
+	public void setAncestor(IVertex<T> ancestor) {
+		this.ancestor = ancestor;
+	}
+
+	@Override
+	public int getTimeStart() {
+		return this.timeStart;
+	}
+
+	@Override
+	public void setTimeStart(int timeStart) {
+		this.timeStart = timeStart;
+	}
+
+	@Override
+	public int getTimeFinish() {
+		return this.timeFinish;
+	}
+
+	@Override
+	public void setTimeFinish(int timeFinish) {
+		this.timeFinish = timeFinish;
 	}
 
 }

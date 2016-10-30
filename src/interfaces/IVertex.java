@@ -2,6 +2,7 @@ package interfaces;
 
 import java.util.Set;
 
+import enums.Colors;
 import exceptions.InvalidEdgeException;
 import exceptions.InvalidVertexException;
 
@@ -30,6 +31,18 @@ public abstract interface IVertex<T> {
 	boolean isAdjacent(IVertex<T> destination);
 	
 	int positionArray();
+	
+	Colors getColor();
+	void setColor(Colors color);
+	
+	IVertex<T> getAncestor();
+	void setAncestor(IVertex<T> ancestor);
+	
+	int getTimeStart();
+	void setTimeStart(int timeStart);
+	
+	int getTimeFinish();
+	void setTimeFinish(int timeFinish);
 	
 	String toString();
 	

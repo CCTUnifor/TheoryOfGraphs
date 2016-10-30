@@ -36,7 +36,7 @@ public class GraphTest {
 		graph.addEdge(AC);
 		graph.addEdge(CA);
 		
-		System.out.println(graph);
+		System.out.println(graph.toString(true));
 	}
 
 }

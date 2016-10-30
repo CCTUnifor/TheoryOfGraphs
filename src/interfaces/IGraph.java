@@ -14,6 +14,9 @@ public interface IGraph<T, V> {
 	int numberOfVertix();
 	String toString();
 	String toString(boolean withData);
+	IGraph<T, V> clone();
+	
+	IVertex<T> getVertex(IVertex<T> vertexTarget) throws InvalidVertexException;
 	
 	/* VERTEX */
 	

@@ -11,7 +11,7 @@ import interfaces.IEdge;
 import interfaces.IGraph;
 import interfaces.IVertex;
 
-public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge> {
+public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge>, Cloneable {
 
 	private Set<IVertex<TVertex>> vertexs;
 	private int numberVertex;
@@ -21,8 +21,8 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge> {
 		this.numberVertex = 0;
 	}
 
-	private IVertex<TVertex> getVertex(IVertex<TVertex> vertexTarget) throws InvalidVertexException {
-		//this.verify(vertexTarget);
+	@Override
+	public IVertex<TVertex> getVertex(IVertex<TVertex> vertexTarget) throws InvalidVertexException {
 
 		for (IVertex<TVertex> iVertex : vertexs) {
 			if (iVertex.equals(vertexTarget)) {
@@ -30,7 +30,7 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge> {
 			}
 		}
 
-		return null;
+		throw new InvalidVertexException("Vetex don't exist");
 	}
 
 	@Override
@@ -60,14 +60,15 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge> {
 		if (vertexToVerify == null)
 			throw new InvalidVertexException("vertexToVerify is null");
 
-		if (this.containsVertex(vertexToVerify)) 
+		if (this.containsVertex(vertexToVerify))
 			throw new InvalidVertexException("This Vertex already in this Graph");
-		
+
 		for (IVertex<TVertex> iVertex : vertexs) {
 			if (iVertex.getLabel().equals(vertexToVerify.getLabel())) {
 				throw new InvalidVertexException("Exist a Vertex with this Label(" + iVertex.getLabel() + ")");
 			}
-		};
+		}
+		;
 
 	}
 
@@ -79,8 +80,10 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge> {
 	@Override
 	public boolean containsVertex(IVertex<TVertex> vertex) throws InvalidVertexException {
 
-		if (this.vertexs.contains(vertex))
-			return true;
+		for (IVertex<TVertex> iVertex : vertexs) {
+			if (iVertex.equals(vertex)) 
+				return true;
+		}
 
 		return false;
 
@@ -97,14 +100,14 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge> {
 	@Override
 	public void addVertex(Set<IVertex<TVertex>> vertexToAdd) throws InvalidVertexException {
 		for (IVertex<TVertex> iVertex : vertexToAdd) {
-			this.verify(iVertex);
+			//this.verify(iVertex);
 			this.vertexs.add(iVertex);
 		}
 	}
 
 	@Override
 	public boolean removeVertex(IVertex<TVertex> vertexToRemove) throws InvalidVertexException {
-		this.verify(vertexToRemove);
+		//this.verify(vertexToRemove);
 
 		return this.vertexs.remove(vertexToRemove);
 	}
@@ -131,7 +134,7 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge> {
 
 	@Override
 	public boolean areAdjacents(IVertex<TVertex> source, IVertex<TVertex> destination) throws InvalidVertexException {
-		this.verify(source);
+		//this.verify(source);
 
 		for (IVertex<TVertex> iVertex : vertexs) {
 			boolean isAdjacent = iVertex.isAdjacent(destination);
@@ -145,7 +148,7 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge> {
 
 	@Override
 	public int degreeOf(IVertex<TVertex> vertex) throws InvalidVertexException {
-		this.verify(vertex);
+		//this.verify(vertex);
 
 		return this.getVertex(vertex).getDegree();
 	}
@@ -195,7 +198,7 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge> {
 	public void addEdge(IEdge<VEdge> edgeToAdd) throws InvalidVertexException, InvalidEdgeException {
 		IVertex<TVertex> source = (IVertex<TVertex>) edgeToAdd.getSource();
 
-		//this.verify(source);
+		// this.verify(source);
 		IVertex<TVertex> u = this.getVertex(source);
 		u.addEdge(edgeToAdd);
 
@@ -280,35 +283,28 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge> {
 
 	@Override
 	public String toString() {
-		return this.mountGrafoToMessage(true);
+		return this.mountGrafoToMessage(false);
 	}
 
 	private String mountGrafoToMessage(boolean withData) {
 
 		String message = "";
-
+		
 		for (IVertex<TVertex> iVertex : vertexs) {
-			
-			if (withData) {
-				message += String.format("%s[%s] => {", iVertex.getLabel(), iVertex.getData());		
-			}else{
-				message += String.format("%s => {", iVertex.getLabel());
-			}
+
+			message += String.format("%s => {", iVertex.toString(withData), iVertex.getData());
 
 			for (IEdge<?> iEdge : iVertex.getAllEdge()) {
-				
-				if (withData){
-					message += String.format(" ((%s)[%s])", iEdge.getDestination(), iEdge.getData());					
-				}else {
+
+				if (withData) {
+					message += String.format(" ((%s)[%s])", iEdge.getDestination().toString(withData), iEdge.getData());
+				} else {
 					message += String.format(" %s", iEdge.getDestination());
 				}
-				
+
 			}
-
 			message += " }\n";
-
 		}
-
 		return message;
 	}
 
@@ -316,7 +312,43 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge> {
 	public String toString(boolean withData) {
 
 		return this.mountGrafoToMessage(withData);
-		
+
+	}
+
+	@Override
+	public IGraph<TVertex, VEdge> clone() {
+		IGraph<TVertex, VEdge> newGraph = new Graph<TVertex, VEdge>();
+
+		Set<IEdge<VEdge>> allEdges = this.getAllEdge();
+
+		for (IEdge<VEdge> iEdge : allEdges) {
+			IVertex<TVertex> u = (IVertex<TVertex>) iEdge.getSource();
+			IVertex<TVertex> v = (IVertex<TVertex>) iEdge.getDestination();
+			
+			try {
+				newGraph.addVertex(u);
+			} catch (InvalidVertexException e) {
+			} 
+			try {
+				newGraph.addVertex(v);
+			} catch (InvalidVertexException e1) {
+				// TODO Auto-generated catch block
+				//e1.printStackTrace();
+			}
+			
+			try {
+				newGraph.addEdge(iEdge);
+			} catch (InvalidVertexException e) {
+				// TODO Auto-generated catch block
+				//e.printStackTrace();
+			} catch (InvalidEdgeException e) {
+				// TODO Auto-generated catch block
+				//e.printStackTrace();
+			}
+
+		}
+
+		return newGraph;
 	}
 
 }

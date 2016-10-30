@@ -1,221 +1,322 @@
 package entities;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 import exceptions.InvalidEdgeException;
 import exceptions.InvalidVertexException;
+import interfaces.IEdge;
 import interfaces.IGraph;
 import interfaces.IVertex;
 
-public class Graph<T, V> implements IGraph<T, V> {
+public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge> {
 
-	private Set<IVertex<T>> vertexs;
+	private Set<IVertex<TVertex>> vertexs;
 	private int numberVertex;
-	
-	public Graph(int numberVertex) {
-		this.vertexs = new LinkedHashSet<IVertex<T>>();
-		this.numberVertex = numberVertex;
+
+	public Graph() {
+		this.vertexs = new LinkedHashSet<IVertex<TVertex>>();
+		this.numberVertex = 0;
 	}
-	
-	private IVertex<T> getVertex(IVertex<T> vertexTarget) throws InvalidVertexException{
-		this.verify(vertexTarget);
-		
-		for (IVertex<T> iVertex : vertexs) {
+
+	private IVertex<TVertex> getVertex(IVertex<TVertex> vertexTarget) throws InvalidVertexException {
+		//this.verify(vertexTarget);
+
+		for (IVertex<TVertex> iVertex : vertexs) {
 			if (iVertex.equals(vertexTarget)) {
 				return iVertex;
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	@Override
 	public boolean isEmpty() {
 
-		for (IVertex<T> iVertex : vertexs) {
+		for (IVertex<TVertex> iVertex : vertexs) {
 			if (iVertex.getAllEdge().size() > 0) {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 
 	@Override
 	public int degree() {
 		int countDegree = 0;
-		
-		for (IVertex<T> iVertex : vertexs) {
+
+		for (IVertex<TVertex> iVertex : vertexs) {
 			countDegree += iVertex.getDegree();
 		}
 		return countDegree;
 	}
 
 	@Override
-	public void verify(IVertex<T> vertexToVerify) throws InvalidVertexException {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implement yet");
+	public void verify(IVertex<TVertex> vertexToVerify) throws InvalidVertexException {
+		if (vertexToVerify == null)
+			throw new InvalidVertexException("vertexToVerify is null");
+
+		if (this.containsVertex(vertexToVerify)) 
+			throw new InvalidVertexException("This Vertex already in this Graph");
+		
+		for (IVertex<TVertex> iVertex : vertexs) {
+			if (iVertex.getLabel().equals(vertexToVerify.getLabel())) {
+				throw new InvalidVertexException("Exist a Vertex with this Label(" + iVertex.getLabel() + ")");
+			}
+		};
+
 	}
 
 	@Override
-	public Set<IVertex<T>> getAllVertex() {
+	public Set<IVertex<TVertex>> getAllVertex() {
 		return this.vertexs;
 	}
 
 	@Override
-	public boolean containsVertex(IVertex<T> vertex) throws InvalidVertexException {
-		
-		if (this.vertexs.contains(vertex)) 
+	public boolean containsVertex(IVertex<TVertex> vertex) throws InvalidVertexException {
+
+		if (this.vertexs.contains(vertex))
 			return true;
-		
+
 		return false;
-		
+
 	}
 
 	@Override
-	public void addVertex(IVertex<T> vertexToAdd) throws InvalidVertexException {
+	public void addVertex(IVertex<TVertex> vertexToAdd) throws InvalidVertexException {
 		this.verify(vertexToAdd);
-		
-		this.addVertex(vertexToAdd);
-		
+
+		this.vertexs.add(vertexToAdd);
+
 	}
 
 	@Override
-	public void addVertex(Set<IVertex<T>> vertexToAdd) throws InvalidVertexException {
-		for (IVertex<T> iVertex : vertexToAdd) {
+	public void addVertex(Set<IVertex<TVertex>> vertexToAdd) throws InvalidVertexException {
+		for (IVertex<TVertex> iVertex : vertexToAdd) {
 			this.verify(iVertex);
 			this.vertexs.add(iVertex);
 		}
 	}
 
 	@Override
-	public boolean removeVertex(IVertex<T> vertexToRemove) throws InvalidVertexException {
+	public boolean removeVertex(IVertex<TVertex> vertexToRemove) throws InvalidVertexException {
 		this.verify(vertexToRemove);
-		
+
 		return this.vertexs.remove(vertexToRemove);
 	}
 
 	@Override
 	public boolean removeAllVertex() {
-		this.vertexs = new LinkedHashSet<IVertex<T>>();
+		this.vertexs = new LinkedHashSet<IVertex<TVertex>>();
 		return true;
 	}
 
 	@Override
-	public boolean removeAllVertex(Set<IVertex<T>> vertexToRemove) throws InvalidVertexException {
-		
-		for (IVertex<T> iVertex : vertexToRemove) {
+	public boolean removeAllVertex(Set<IVertex<TVertex>> vertexToRemove) throws InvalidVertexException {
+
+		for (IVertex<TVertex> iVertex : vertexToRemove) {
 			boolean isRemoved = this.removeVertex(iVertex);
-			
+
 			if (!isRemoved) {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 
 	@Override
-	public boolean areAdjacents(IVertex<T> source, IVertex<T> destination) throws InvalidVertexException {
+	public boolean areAdjacents(IVertex<TVertex> source, IVertex<TVertex> destination) throws InvalidVertexException {
 		this.verify(source);
 
-		for (IVertex<T> iVertex : vertexs) {
+		for (IVertex<TVertex> iVertex : vertexs) {
 			boolean isAdjacent = iVertex.isAdjacent(destination);
 			if (isAdjacent)
 				return true;
-			
+
 		}
-		
+
 		return false;
 	}
 
 	@Override
-	public int degreeOf(IVertex<T> vertex) throws InvalidVertexException {
+	public int degreeOf(IVertex<TVertex> vertex) throws InvalidVertexException {
 		this.verify(vertex);
-		
+
 		return this.getVertex(vertex).getDegree();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Set<E<T, V>> getAllEdge() {
-		Set<E<T, V>> allEdge = new LinkedHashSet<E<T,V>>();
-		
-		for (IVertex<T> v : this.vertexs) {
-			Set edges = v.getAllEdge();
-			allEdge.addAll(edges);
-			
+	public Set<IEdge<VEdge>> getAllEdge() {
+		Set<IEdge<VEdge>> allEdge = new LinkedHashSet<IEdge<VEdge>>();
+
+		for (IVertex<TVertex> v : this.vertexs) {
+			Set<IEdge<?>> edges = v.getAllEdge();
+			allEdge.addAll((Collection<? extends IEdge<VEdge>>) edges);
+
 		}
-		
+
+		return allEdge;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Set<IEdge<VEdge>> getAllEdge(IVertex<TVertex> vertexTarget) throws InvalidVertexException {
+		Set<IEdge<VEdge>> allEdge = new LinkedHashSet<IEdge<VEdge>>();
+
+		for (IVertex<TVertex> v : this.vertexs) {
+			if (v.equals(vertexTarget)) {
+				Set<IEdge<?>> edges = v.getAllEdge();
+				allEdge.addAll((Collection<? extends IEdge<VEdge>>) edges);
+			}
+
+		}
+
 		return allEdge;
 	}
 
 	@Override
-	public Set<E<T, V>> getAllEdge(IVertex<T> vertexTarget) throws InvalidVertexException {
+	public boolean containsEdge(IEdge<VEdge> edgeTarget) throws InvalidEdgeException {
+
+		for (IVertex<TVertex> iVertex : vertexs) {
+			if (iVertex.containsEdge(edgeTarget))
+				return true;
+		}
+
+		return false;
+	}
+
+	@Override
+	public void addEdge(IEdge<VEdge> edgeToAdd) throws InvalidVertexException, InvalidEdgeException {
+		IVertex<TVertex> source = (IVertex<TVertex>) edgeToAdd.getSource();
+
+		//this.verify(source);
+		IVertex<TVertex> u = this.getVertex(source);
+		u.addEdge(edgeToAdd);
+
+	}
+
+	@Override
+	public void addEdge(Set<IEdge<VEdge>> edgeToAdd) throws InvalidVertexException, InvalidEdgeException {
+
+		for (IEdge<VEdge> iEdge : edgeToAdd) {
+			this.addEdge(iEdge);
+		}
+
+	}
+
+	@Override
+	public boolean removeEdge(IEdge<VEdge> edgeToRemove) throws InvalidVertexException, InvalidEdgeException {
+		IVertex<TVertex> source = (IVertex<TVertex>) edgeToRemove.getSource();
+
+		this.verify(source);
+		source = this.getVertex(source);
+
+		return source.removeEdge(edgeToRemove);
+	}
+
+	@Override
+	public boolean removeAllEdge() throws InvalidEdgeException, InvalidVertexException {
+
+		for (IVertex<TVertex> iVertex : vertexs) {
+			boolean isRemoved = this.removeAllEdge(iVertex);
+
+			if (!isRemoved) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	@Override
+	public boolean removeAllEdge(IVertex<TVertex> vertextTarget) throws InvalidVertexException, InvalidEdgeException {
+		this.verify(vertextTarget);
+
+		return this.getVertex(vertextTarget).removeAllEdge();
+
+	}
+
+	@Override
+	public boolean removeAllEdge(Set<IEdge<VEdge>> edgeToRemove) throws InvalidVertexException, InvalidEdgeException {
+
+		for (IEdge<VEdge> iEdge : edgeToRemove) {
+			boolean isRemoved = this.removeEdge(iEdge);
+			if (!isRemoved) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	@Override
+	public Set<IEdge<VEdge>> getDistinctEdge() {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("Not implement yet");
 	}
 
 	@Override
-	public boolean containsEdge(E<T, V> edgeTarget) throws InvalidEdgeException {
+	public Set<IEdge<VEdge>> getDistinctEdge(IVertex<TVertex> vertexTarget) throws InvalidVertexException {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("Not implement yet");
 	}
 
 	@Override
-	public void addEdge(E<T, V> edgeToAdd) throws InvalidEdgeException, InvalidEdgeException {
+	public boolean isEdgeAllowed(IEdge<VEdge> edgeTarget) throws InvalidEdgeException {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("Not implement yet");
 	}
 
 	@Override
-	public void addEdge(Set<E<T, V>> edgeToAdd) throws InvalidVertexException, InvalidEdgeException {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implement yet");
+	public int numberOfVertix() {
+		return this.numberVertex;
 	}
 
 	@Override
-	public boolean removeEdge(E<T, V> edgeToRemove) throws InvalidVertexException, InvalidEdgeException {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implement yet");
+	public String toString() {
+		return this.mountGrafoToMessage(true);
+	}
+
+	private String mountGrafoToMessage(boolean withData) {
+
+		String message = "";
+
+		for (IVertex<TVertex> iVertex : vertexs) {
+			
+			if (withData) {
+				message += String.format("%s[%s] => {", iVertex.getLabel(), iVertex.getData());		
+			}else{
+				message += String.format("%s => {", iVertex.getLabel());
+			}
+
+			for (IEdge<?> iEdge : iVertex.getAllEdge()) {
+				
+				if (withData){
+					message += String.format(" ((%s)[%s])", iEdge.getDestination(), iEdge.getData());					
+				}else {
+					message += String.format(" %s", iEdge.getDestination());
+				}
+				
+			}
+
+			message += " }\n";
+
+		}
+
+		return message;
 	}
 
 	@Override
-	public boolean removeAllEdge() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implement yet");
-	}
+	public String toString(boolean withData) {
 
-	@Override
-	public boolean removeAllEdge(IVertex<T> vertextTarget) throws InvalidVertexException {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implement yet");
-	}
-
-	@Override
-	public boolean removeAllEdge(Set<E<T, V>> edgeToRemove) throws InvalidVertexException, InvalidEdgeException {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implement yet");
-	}
-
-	@Override
-	public Set<E<T, V>> getDistinctEdge() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implement yet");
-	}
-
-	@Override
-	public Set<E<T, V>> getDistinctEdge(IVertex<T> vertexTarget) throws InvalidVertexException {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implement yet");
-	}
-
-	@Override
-	public boolean isEdgeAllowed(E<T, V> edgeTarget) throws InvalidEdgeException {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implement yet");
+		return this.mountGrafoToMessage(withData);
+		
 	}
 
 }

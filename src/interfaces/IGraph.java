@@ -11,6 +11,9 @@ public interface IGraph<T, V> {
 	boolean isEmpty();
 	int degree();
 	void verify(IVertex<T> vertexToVerify) throws InvalidVertexException;
+	int numberOfVertix();
+	String toString();
+	String toString(boolean withData);
 	
 	/* VERTEX */
 	
@@ -34,28 +37,28 @@ public interface IGraph<T, V> {
 	
 	/* EDGE */
 
-	Set<E<T, V>> getAllEdge();
+	Set<IEdge<V>> getAllEdge();
 	
-	Set<E<T, V>> getAllEdge(IVertex<T> vertexTarget) throws InvalidVertexException;
+	Set<IEdge<V>> getAllEdge(IVertex<T> vertexTarget) throws InvalidVertexException;
 	
-	boolean containsEdge(E<T, V> edgeTarget) throws InvalidEdgeException;
+	boolean containsEdge(IEdge<V> edgeTarget) throws InvalidEdgeException;
 	
-	void addEdge(E<T, V> edgeToAdd) throws InvalidEdgeException, InvalidEdgeException;
+	void addEdge(IEdge<V> edgeToAdd) throws InvalidVertexException, InvalidEdgeException;
 	
-	void addEdge(Set<E<T, V>> edgeToAdd) throws InvalidVertexException, InvalidEdgeException;
+	void addEdge(Set<IEdge<V>> edgeToAdd) throws InvalidVertexException, InvalidEdgeException;
 	
-	boolean removeEdge(E<T, V> edgeToRemove) throws InvalidVertexException, InvalidEdgeException;
+	boolean removeEdge(IEdge<V> edgeToRemove) throws InvalidVertexException, InvalidEdgeException;
 	
-	boolean removeAllEdge();
+	boolean removeAllEdge() throws InvalidEdgeException, InvalidVertexException;
 	
-	boolean removeAllEdge(IVertex<T> vertextTarget) throws InvalidVertexException;
+	boolean removeAllEdge(IVertex<T> vertextTarget) throws InvalidVertexException, InvalidEdgeException;
 	
-	boolean removeAllEdge(Set<E<T, V>> edgeToRemove) throws InvalidVertexException, InvalidEdgeException;
+	boolean removeAllEdge(Set<IEdge<V>> edgeToRemove) throws InvalidVertexException, InvalidEdgeException;
 	
-	Set<E<T, V>> getDistinctEdge();
+	Set<IEdge<V>> getDistinctEdge();
 	
-	Set<E<T, V>> getDistinctEdge(IVertex<T> vertexTarget) throws InvalidVertexException;
+	Set<IEdge<V>> getDistinctEdge(IVertex<T> vertexTarget) throws InvalidVertexException;
 	
-	boolean isEdgeAllowed(E<T, V> edgeTarget) throws InvalidEdgeException;
+	boolean isEdgeAllowed(IEdge<V> edgeTarget) throws InvalidEdgeException;
 	
 }

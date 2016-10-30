@@ -5,31 +5,47 @@ import java.util.Set;
 
 import exceptions.InvalidEdgeException;
 import exceptions.InvalidVertexException;
+import interfaces.IEdge;
 import interfaces.IVertex;
 
 public class V<T> implements IVertex<T> {
 
-	private Set<E> adjacenteAdges;
-	private T label;
-	
-	public V(T label){
-		this.adjacenteAdges = new LinkedHashSet<E>();
+	private Set<IEdge<?>> adjacenteEdges;
+	private String label;
+	private int positionArray;
+	private T data;
+
+	public V(String label, T data) {
+		this.adjacenteEdges = new LinkedHashSet<IEdge<?>>();
 		this.label = label;
+		this.data = data;
 	}
-	
+
+	public V(int positionArray, String label, T data) {
+		this.adjacenteEdges = new LinkedHashSet<IEdge<?>>();
+		this.label = label;
+		this.positionArray = positionArray;
+		this.data = data;
+	}
+
 	@Override
-	public T getLabel() {
+	public String getLabel() {
 		return this.label;
 	}
 
 	@Override
-	public boolean containsEdge(E edgeTarget) throws InvalidEdgeException {
-		return (this.adjacenteAdges.contains(edgeTarget));
+	public T getData() {
+		return this.data;
 	}
 
 	@Override
-	public Set<E> getAllEdge() {
-		return this.adjacenteAdges;
+	public boolean containsEdge(IEdge<?> edgeTarget) throws InvalidEdgeException {
+		return (this.adjacenteEdges.contains(edgeTarget));
+	}
+
+	@Override
+	public Set<IEdge<?>> getAllEdge() {
+		return this.adjacenteEdges;
 	}
 
 	@Override
@@ -37,10 +53,10 @@ public class V<T> implements IVertex<T> {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("Not implement yet");
 	}
-	
+
 	@Override
 	public int getDegree() {
-		return this.adjacenteAdges.size();
+		return this.adjacenteEdges.size();
 	}
 
 	@Override
@@ -49,6 +65,55 @@ public class V<T> implements IVertex<T> {
 		throw new UnsupportedOperationException("Not implement yet");
 	}
 
+	@Override
+	public boolean addEdge(IEdge<?> edgeToAdd) {
+		return this.adjacenteEdges.add(edgeToAdd);
+	}
 
+	@Override
+	public boolean removeEdge(IEdge<?> edgeToRemove) {
+
+		return this.adjacenteEdges.remove(edgeToRemove);
+	}
+
+	@Override
+	public boolean removeAllEdge() {
+		this.adjacenteEdges = new LinkedHashSet<IEdge<?>>();
+
+		return true;
+	}
+
+	@Override
+	public int positionArray() {
+		return positionArray;
+	}
+
+	@Override
+	public String toString() {
+		return this.toString(false);
+	}
+
+	@Override
+	public String toString(boolean withData) {
+		if (withData)
+			return String.format("%s[%s]", this.getLabel(), this.getData());
+		
+		return String.format("%s",  this.getLabel());
+	}
+	
+	@Override
+	public boolean equals(Object object) {
+		
+		if (object == null)
+			return false;
+
+		IVertex<T> vertex = (IVertex<T>) object;
+
+		if (this.label.equals(vertex.getLabel()))
+			return true;
+
+		return false;
+
+	}
 
 }

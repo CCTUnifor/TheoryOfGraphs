@@ -1,12 +1,14 @@
 package interfaces;
 
-public abstract interface IEdge<T, V> {
+public abstract interface IEdge<T> {
 
-	IVertex<T> getSource();
+	IVertex<?> getSource();
 	
-	IVertex<T> getDestination();
+	IVertex<?> getDestination();
 	
-	IEdge<T, V> getReverse();
+	IEdge<T> getReverse();
 	
-	V getData();
+	T getData();
+	
+	String toString();
 }

@@ -2,17 +2,24 @@ package interfaces;
 
 import java.util.Set;
 
-import entities.E;
 import exceptions.InvalidEdgeException;
 import exceptions.InvalidVertexException;
 
 public abstract interface IVertex<T> {
 
-	T getLabel();
+	String getLabel();
 	
-	boolean containsEdge(E edgeTarget) throws InvalidEdgeException;
+	T getData();
 	
-	Set<E> getAllEdge();
+	boolean containsEdge(IEdge<?> edgeTarget) throws InvalidEdgeException;
+	
+	Set<IEdge<?>> getAllEdge();
+	
+	boolean addEdge(IEdge<?> edgeToAdd);
+	
+	boolean removeEdge(IEdge<?> edgeToRemove);
+	
+	boolean removeAllEdge();
 	
 	boolean containsPathTo(IVertex<T> destination) throws InvalidVertexException;
 	
@@ -21,5 +28,11 @@ public abstract interface IVertex<T> {
 	boolean equals(Object object);
 	
 	boolean isAdjacent(IVertex<T> destination);
+	
+	int positionArray();
+	
+	String toString();
+	
+	String toString(boolean withData);
 	
 }

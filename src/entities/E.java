@@ -3,36 +3,41 @@ package entities;
 import interfaces.IEdge;
 import interfaces.IVertex;
 
-public class E<T, V> implements IEdge<T, V> {
+public class E<T> implements IEdge<T> {
 
-	private IVertex<T> source;
-	private IVertex<T> destination;
-	private V data;
+	private IVertex<?> source;
+	private IVertex<?> destination;
+	private T data;
 	
-	public E(IVertex<T> source, IVertex<T> destination, V data){
+	public E(IVertex<?> source, IVertex<?> destination, T data){
 		this.source = source;
 		this.destination = destination;
 		this.data = data;
 	}
 	
 	@Override
-	public IVertex<T> getSource() {
+	public IVertex<?> getSource() {
 		return this.source;
 	}
 
 	@Override
-	public IVertex<T> getDestination() {
+	public IVertex<?> getDestination() {
 		return this.destination;
 	}
 
 	@Override
-	public IEdge<T, V> getReverse() {
-		return new E<T,V>(this.destination, this.source, this.data);
+	public IEdge<T> getReverse() {
+		return new E<T>(this.destination, this.source, this.data);
 	}
 
 	@Override
-	public V getData() {
+	public T getData() {
 		return this.data;
+	}
+	
+	@Override
+	public String toString(){
+		return String.format("(%s, %s)[%s]", this.source.getLabel(), this.destination.getLabel(), this.data);
 	}
 
 }

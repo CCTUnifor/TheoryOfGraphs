@@ -21,12 +21,18 @@ public class V<T> implements IVertex<T> {
 	private int timeStart;
 	private int timeFinish;
 
+	public V(String label) {
+		this.adjacenteEdges = new LinkedHashSet<IEdge<?>>();
+		this.label = label;
+		this.resetConfigs();
+	}
+	
 	public V(String label, T data) {
 		this.adjacenteEdges = new LinkedHashSet<IEdge<?>>();
 		this.label = label;
 		this.data = data;
 		
-		this.initializeProperties();
+		this.resetConfigs();
 	}
 
 	public V(int positionArray, String label, T data) {
@@ -35,10 +41,10 @@ public class V<T> implements IVertex<T> {
 		this.positionArray = positionArray;
 		this.data = data;
 		
-		this.initializeProperties();
+		this.resetConfigs();
 	}
 
-	private void initializeProperties(){
+	public void resetConfigs(){
 		this.color = Colors.WHITE;
 		this.ancestor = null;
 		this.timeStart = Integer.MAX_VALUE;
@@ -171,6 +177,11 @@ public class V<T> implements IVertex<T> {
 	@Override
 	public void setTimeFinish(int timeFinish) {
 		this.timeFinish = timeFinish;
+	}
+
+	@Override
+	public boolean isLeaf() { 
+		return (this.adjacenteEdges.size() == 0); // DANGER!! 
 	}
 
 }

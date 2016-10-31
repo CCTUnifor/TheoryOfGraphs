@@ -28,6 +28,13 @@ public class BreadthFirstSearch<V, E> extends GraphFirstSearch<V, E> {
 		
 		return this.graph;
 	}
+
+	@Override
+	public IGraph<V, E> search(IVertex<V> source) {
+		this.runBFS(source);
+		
+		return this.graph;
+	}
 	
 	private void runBFS(IVertex<V> source){
 		source.setTimeFinish(0);
@@ -77,6 +84,7 @@ public class BreadthFirstSearch<V, E> extends GraphFirstSearch<V, E> {
 		target.setAncestor(source);
 		target.setTimeFinish(source.getTimeFinish() + 1);
 	}
+
 
 	
 	

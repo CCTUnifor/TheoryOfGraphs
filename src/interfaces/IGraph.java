@@ -2,7 +2,7 @@ package interfaces;
 
 import java.util.Set;
 
-import entities.E;
+import algorithms.DepthFirstSearchBridge;
 import exceptions.InvalidEdgeException;
 import exceptions.InvalidVertexException;
 
@@ -15,6 +15,7 @@ public interface IGraph<T, V> {
 	String toString();
 	String toString(boolean withData);
 	IGraph<T, V> clone();
+	void resetConfigs();
 	
 	IVertex<T> getVertex(IVertex<T> vertexTarget) throws InvalidVertexException;
 	
@@ -62,6 +63,6 @@ public interface IGraph<T, V> {
 	
 	Set<IEdge<V>> getDistinctEdge(IVertex<T> vertexTarget) throws InvalidVertexException;
 	
-	boolean isEdgeAllowed(IEdge<V> edgeTarget) throws InvalidEdgeException;
+	boolean isBridge(IDepthFirstSearchBridge<T, V> search, IEdge<V> edgeTarget) throws InvalidEdgeException, InvalidVertexException;
 	
 }

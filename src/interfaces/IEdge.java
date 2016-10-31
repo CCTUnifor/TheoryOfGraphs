@@ -1,14 +1,15 @@
 package interfaces;
 
-public abstract interface IEdge<T> {
+import exceptions.InvalidEdgeException;
 
-	IVertex<?> getSource();
+public abstract interface IEdge<T> {
 	
+	IVertex<?> getSource();
 	IVertex<?> getDestination();
+	T getData();
 	
 	IEdge<T> getReverse();
-	
-	T getData();
+
 	
 	String toString();
 }

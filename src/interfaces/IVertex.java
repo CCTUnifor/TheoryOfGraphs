@@ -9,8 +9,10 @@ import exceptions.InvalidVertexException;
 public abstract interface IVertex<T> {
 
 	String getLabel();
-	
 	T getData();
+	void resetConfigs();
+	
+	boolean isLeaf();
 	
 	boolean containsEdge(IEdge<?> edgeTarget) throws InvalidEdgeException;
 	
@@ -45,7 +47,6 @@ public abstract interface IVertex<T> {
 	void setTimeFinish(int timeFinish);
 	
 	String toString();
-	
 	String toString(boolean withData);
 	
 }

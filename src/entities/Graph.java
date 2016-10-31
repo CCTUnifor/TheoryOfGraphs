@@ -1,12 +1,12 @@
 package entities;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 import exceptions.InvalidEdgeException;
 import exceptions.InvalidVertexException;
+import interfaces.IDepthFirstSearchBridge;
 import interfaces.IEdge;
 import interfaces.IGraph;
 import interfaces.IVertex;
@@ -19,6 +19,13 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge>, Cloneable 
 	public Graph() {
 		this.vertexs = new LinkedHashSet<IVertex<TVertex>>();
 		this.numberVertex = 0;
+	}
+	
+	@Override
+	public void resetConfigs(){
+		for (IVertex<TVertex> iVertex : vertexs) {
+			iVertex.resetConfigs();
+		}
 	}
 
 	@Override
@@ -35,14 +42,7 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge>, Cloneable 
 
 	@Override
 	public boolean isEmpty() {
-
-		for (IVertex<TVertex> iVertex : vertexs) {
-			if (iVertex.getAllEdge().size() > 0) {
-				return false;
-			}
-		}
-
-		return true;
+		return (this.getAllEdge().size() == 0);
 	}
 
 	@Override
@@ -52,6 +52,7 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge>, Cloneable 
 		for (IVertex<TVertex> iVertex : vertexs) {
 			countDegree += iVertex.getDegree();
 		}
+
 		return countDegree;
 	}
 
@@ -68,7 +69,7 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge>, Cloneable 
 				throw new InvalidVertexException("Exist a Vertex with this Label(" + iVertex.getLabel() + ")");
 			}
 		}
-		;
+		
 
 	}
 
@@ -91,9 +92,11 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge>, Cloneable 
 
 	@Override
 	public void addVertex(IVertex<TVertex> vertexToAdd) throws InvalidVertexException {
-		this.verify(vertexToAdd);
+		//this.verify(vertexToAdd);
 
-		this.vertexs.add(vertexToAdd);
+		if (!this.containsVertex(vertexToAdd))
+			this.vertexs.add(vertexToAdd);
+		
 
 	}
 
@@ -217,9 +220,13 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge>, Cloneable 
 	public boolean removeEdge(IEdge<VEdge> edgeToRemove) throws InvalidVertexException, InvalidEdgeException {
 		IVertex<TVertex> source = (IVertex<TVertex>) edgeToRemove.getSource();
 
-		this.verify(source);
+		//this.verify(source);
 		source = this.getVertex(source);
-
+		for (IEdge<?> iEdge : source.getAllEdge()) {
+			iEdge = (IEdge<VEdge>) iEdge;
+			if (edgeToRemove.equals(iEdge))
+				return source.removeEdge(iEdge);
+		}
 		return source.removeEdge(edgeToRemove);
 	}
 
@@ -266,12 +273,6 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge>, Cloneable 
 
 	@Override
 	public Set<IEdge<VEdge>> getDistinctEdge(IVertex<TVertex> vertexTarget) throws InvalidVertexException {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implement yet");
-	}
-
-	@Override
-	public boolean isEdgeAllowed(IEdge<VEdge> edgeTarget) throws InvalidEdgeException {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("Not implement yet");
 	}
@@ -350,5 +351,15 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge>, Cloneable 
 
 		return newGraph;
 	}
+	
+	@Override
+	public boolean isBridge(IDepthFirstSearchBridge<TVertex, VEdge> search, IEdge<VEdge> edgeTarget)
+			throws InvalidEdgeException, InvalidVertexException {
+		
+		return search.isBridge(edgeTarget);
+		
+	}
+
+
 
 }

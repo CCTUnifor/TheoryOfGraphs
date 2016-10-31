@@ -8,13 +8,13 @@ public class E<T> implements IEdge<T> {
 	private IVertex<?> source;
 	private IVertex<?> destination;
 	private T data;
-	
-	public E(IVertex<?> source, IVertex<?> destination, T data){
+
+	public E(IVertex<?> source, IVertex<?> destination, T data) {
 		this.source = source;
 		this.destination = destination;
 		this.data = data;
 	}
-	
+
 	@Override
 	public IVertex<?> getSource() {
 		return this.source;
@@ -34,10 +34,21 @@ public class E<T> implements IEdge<T> {
 	public T getData() {
 		return this.data;
 	}
-	
+
 	@Override
-	public String toString(){
+	public String toString() {
 		return String.format("(%s, %s)[%s]", this.source.getLabel(), this.destination.getLabel(), this.data);
+	}
+
+	@Override
+	public boolean equals(Object object) {
+		if (object == null)
+			return false;
+		
+		E<T> edge = (E<T>) object;
+		
+		return (edge.getSource().equals(this.source) &&
+				edge.getDestination().equals(this.destination));
 	}
 
 }

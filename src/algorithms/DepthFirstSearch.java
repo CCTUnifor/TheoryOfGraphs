@@ -29,6 +29,13 @@ public class DepthFirstSearch<V, E> extends GraphFirstSearch<V, E> {
 		return this.graph;
 	}
 
+	@Override
+	public IGraph<V, E> search(IVertex<V> source) {
+		this.runDFS(source);
+		
+		return this.graph;
+	}
+	
 	private void runDFS(IVertex<V> source){
 		
 		source.setColor(Colors.GREY);
@@ -66,5 +73,7 @@ public class DepthFirstSearch<V, E> extends GraphFirstSearch<V, E> {
 		}
 		
 	}
+
+	
 	
 }

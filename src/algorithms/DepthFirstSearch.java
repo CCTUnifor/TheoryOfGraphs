@@ -1,7 +1,5 @@
 package algorithms;
 
-import java.util.Queue;
-
 import enums.Colors;
 import exceptions.InvalidVertexException;
 import interfaces.GraphFirstSearch;
@@ -19,7 +17,7 @@ public class DepthFirstSearch<V, E> extends GraphFirstSearch<V, E> {
 	}
 	
 	@Override
-	public IGraph search() {
+	public IGraph<V, E> search() {
 		
 		for (IVertex<V> iVertex : this.graph.getAllVertex()) {
 			if (iVertex.getColor() == Colors.WHITE)
@@ -52,6 +50,7 @@ public class DepthFirstSearch<V, E> extends GraphFirstSearch<V, E> {
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void organizeAllVexter(IVertex<V> source){
 		
 		for (IEdge<?> iEdge : source.getAllEdge()) {

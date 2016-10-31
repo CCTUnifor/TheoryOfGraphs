@@ -55,6 +55,7 @@ public class BreadthFirstSearch<V, E> extends GraphFirstSearch<V, E> {
 		
 	}
 
+	@SuppressWarnings("unchecked")
 	private void organizeAllVexter(Queue<IVertex<V>> q, IVertex<V> source){
 		
 		for (IEdge<?> iEdge : source.getAllEdge()) {

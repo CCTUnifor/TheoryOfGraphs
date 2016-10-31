@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import algorithms.DepthFirstSearchBridge;
 import exceptions.InvalidEdgeException;
 import exceptions.InvalidVertexException;
 import interfaces.IDepthFirstSearchBridge;
@@ -323,8 +324,8 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge>, Cloneable 
 		Set<IEdge<VEdge>> allEdges = this.getAllEdge();
 
 		for (IEdge<VEdge> iEdge : allEdges) {
-			IVertex<TVertex> u = (IVertex<TVertex>) iEdge.getSource();
-			IVertex<TVertex> v = (IVertex<TVertex>) iEdge.getDestination();
+			IVertex<TVertex> u = new V<TVertex>(iEdge.getSource().getLabel(), (TVertex) iEdge.getSource().getData());
+			IVertex<TVertex> v = new V<TVertex>(iEdge.getDestination().getLabel(), (TVertex) iEdge.getDestination().getData());
 			
 			try {
 				newGraph.addVertex(u);
@@ -338,7 +339,8 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge>, Cloneable 
 			}
 			
 			try {
-				newGraph.addEdge(iEdge);
+				IEdge<VEdge> newEdge = new E<VEdge>(u, v, iEdge.getData());
+				newGraph.addEdge(newEdge);
 			} catch (InvalidVertexException e) {
 				// TODO Auto-generated catch block
 				//e.printStackTrace();
@@ -356,7 +358,9 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge>, Cloneable 
 	public boolean isBridge(IDepthFirstSearchBridge<TVertex, VEdge> search, IEdge<VEdge> edgeTarget)
 			throws InvalidEdgeException, InvalidVertexException {
 		
-		return search.isBridge(edgeTarget);
+		IDepthFirstSearchBridge<TVertex, VEdge> _search = new DepthFirstSearchBridge<TVertex, VEdge>(this.clone());
+		
+		return _search.isBridge(edgeTarget);
 		
 	}
 

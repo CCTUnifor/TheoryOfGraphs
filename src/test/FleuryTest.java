@@ -36,11 +36,11 @@ public class FleuryTest {
 		System.out.println("Graph Converted to .txt from Computational Representation\n");
 		System.out.println(graph.toString(false));
 
-		IDepthFirstSearchBridge search = new DepthFirstSearchBridge(graph);
+		IDepthFirstSearchBridge<Integer, Integer> search = new DepthFirstSearchBridge<Integer, Integer>(graph.clone());
 		
-		IFleury fleury = new Fleury(graph, search);
+		IFleury<Integer, Integer> fleury = new Fleury<Integer, Integer>(graph, search);
 		
-		IVertex<Integer> u = new V("0");
+		IVertex<Integer> u = new V<Integer>("0");
 		
 		fleury.search(u);
 		

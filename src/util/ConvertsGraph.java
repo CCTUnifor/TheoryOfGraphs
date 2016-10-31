@@ -33,40 +33,28 @@ public class ConvertsGraph<TVertex, VEdge> {
 
 			String[] verticesAdj = linha.split(" ");
 
-			IVertex<TVertex> u = new V<TVertex>(countX+"", (TVertex) verticesAdj[countX]);
+			IVertex<TVertex> u = new V<TVertex>(countX + "", (TVertex) verticesAdj[countX]);
 
-			try {
-				graph.addVertex(u);
-			} catch (InvalidVertexException e) {
-				// TODO Auto-generated catch block
-				//e.printStackTrace();
-			}
+			graph.addVertex(u);
 
 			int countY = 0;
-			
+
 			for (String vertice : verticesAdj) {
-				
+
 				if (countX != countY) {
-					
+
 					if (!(vertice.equals("0") || vertice.equals("inf"))) {
-						IVertex<TVertex> v = new V<TVertex>(countY+"", (TVertex) vertice);
-						
-						try {
-							graph.addVertex(v);
-							
-							
-						} catch (InvalidVertexException e) {
-							// TODO Auto-generated catch block
-							//e.printStackTrace();
-						}
+						IVertex<TVertex> v = new V<TVertex>(countY + "", (TVertex) vertice);
+
+						graph.addVertex(v);
 						try {
 							IEdge<VEdge> edge = new E<VEdge>(u, v, (VEdge) vertice);
 							graph.addEdge(edge);
 						} catch (InvalidVertexException | InvalidEdgeException e) {
 							// TODO Auto-generated catch block
-							//e.printStackTrace();
+							// e.printStackTrace();
 						}
-						
+
 					}
 				}
 

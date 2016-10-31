@@ -3,6 +3,7 @@ package interfaces;
 import java.util.Set;
 
 import algorithms.DepthFirstSearchBridge;
+import enums.GraphPrintPresentation;
 import exceptions.InvalidEdgeException;
 import exceptions.InvalidVertexException;
 
@@ -14,20 +15,21 @@ public interface IGraph<T, V> {
 	int numberOfVertix();
 	String toString();
 	String toString(boolean withData);
+	String toString(GraphPrintPresentation typePresentation);
 	IGraph<T, V> clone();
 	void resetConfigs();
 	
-	IVertex<T> getVertex(IVertex<T> vertexTarget) throws InvalidVertexException;
+	IVertex<T> getVertex(IVertex<T> vertexTarget);
 	
 	/* VERTEX */
 	
 	Set<IVertex<T>> getAllVertex();
 	
-	boolean containsVertex(IVertex<T> vertex) throws InvalidVertexException;
+	boolean containsVertex(IVertex<T> vertex);
 	
-	void addVertex(IVertex<T> vertexToAdd) throws InvalidVertexException;
+	IVertex<T> addVertex(IVertex<T> vertexToAdd);
 	
-	void addVertex(Set<IVertex<T>> vertexToAdd) throws InvalidVertexException;
+	Set<IVertex<T>> addVertex(Set<IVertex<T>> vertexToAdd);
 	
 	boolean removeVertex(IVertex<T> vertexToRemove) throws InvalidVertexException;
 	
@@ -35,7 +37,7 @@ public interface IGraph<T, V> {
 	
 	boolean removeAllVertex(Set<IVertex<T>> vertexToRemove) throws InvalidVertexException;
 	
-	boolean areAdjacents(IVertex<T> source, IVertex<T> destination) throws InvalidVertexException;
+	boolean areAdjacents(IVertex<T> source, IVertex<T> destination);
 	
 	int degreeOf(IVertex<T> vertex) throws InvalidVertexException;
 	

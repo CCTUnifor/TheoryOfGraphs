@@ -37,7 +37,13 @@ public class E<T> implements IEdge<T> {
 
 	@Override
 	public String toString() {
-		return String.format("(%s, %s)[%s]", this.source.getLabel(), this.destination.getLabel(), this.data);
+		return this.toString(false);
+	}
+	
+	public String toString(boolean withData) {
+		if (withData)
+			return String.format("(%s, %s)[%s]", this.source.getLabel(), this.destination.getLabel(), this.data);
+		return String.format("(%s, %s)", this.source.getLabel(), this.destination.getLabel());
 	}
 
 	@Override

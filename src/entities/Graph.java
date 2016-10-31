@@ -5,12 +5,14 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import algorithms.DepthFirstSearchBridge;
+import enums.GraphPrintPresentation;
 import exceptions.InvalidEdgeException;
 import exceptions.InvalidVertexException;
 import interfaces.IDepthFirstSearchBridge;
 import interfaces.IEdge;
 import interfaces.IGraph;
 import interfaces.IVertex;
+import util.GraphPrintPresentationFactory;
 
 public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge>, Cloneable {
 
@@ -21,24 +23,15 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge>, Cloneable 
 		this.vertexs = new LinkedHashSet<IVertex<TVertex>>();
 		this.numberVertex = 0;
 	}
-	
+
 	@Override
-	public void resetConfigs(){
-		for (IVertex<TVertex> iVertex : vertexs) {
-			iVertex.resetConfigs();
-		}
+	public void resetConfigs() {
+		this.vertexs.stream().forEach(x -> x.resetConfigs());
 	}
 
 	@Override
-	public IVertex<TVertex> getVertex(IVertex<TVertex> vertexTarget) throws InvalidVertexException {
-
-		for (IVertex<TVertex> iVertex : vertexs) {
-			if (iVertex.equals(vertexTarget)) {
-				return iVertex;
-			}
-		}
-
-		throw new InvalidVertexException("Vetex don't exist");
+	public IVertex<TVertex> getVertex(IVertex<TVertex> vertexTarget) {
+		return this.vertexs.stream().filter(x -> x.equals(vertexTarget)).findFirst().orElse(null);
 	}
 
 	@Override
@@ -70,7 +63,6 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge>, Cloneable 
 				throw new InvalidVertexException("Exist a Vertex with this Label(" + iVertex.getLabel() + ")");
 			}
 		}
-		
 
 	}
 
@@ -80,40 +72,35 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge>, Cloneable 
 	}
 
 	@Override
-	public boolean containsVertex(IVertex<TVertex> vertex) throws InvalidVertexException {
-
-		for (IVertex<TVertex> iVertex : vertexs) {
-			if (iVertex.equals(vertex)) 
-				return true;
-		}
-
-		return false;
-
+	public boolean containsVertex(IVertex<TVertex> vertex) {
+		return (this.getVertex(vertex) != null);
 	}
 
 	@Override
-	public void addVertex(IVertex<TVertex> vertexToAdd) throws InvalidVertexException {
-		//this.verify(vertexToAdd);
-
-		if (!this.containsVertex(vertexToAdd))
+	public IVertex<TVertex> addVertex(IVertex<TVertex> vertexToAdd) {
+		if (!this.containsVertex(vertexToAdd)) {
 			this.vertexs.add(vertexToAdd);
-		
-
+		}
+		return this.getVertex(vertexToAdd);
 	}
 
 	@Override
-	public void addVertex(Set<IVertex<TVertex>> vertexToAdd) throws InvalidVertexException {
-		for (IVertex<TVertex> iVertex : vertexToAdd) {
-			//this.verify(iVertex);
-			this.vertexs.add(iVertex);
-		}
+	public Set<IVertex<TVertex>> addVertex(Set<IVertex<TVertex>> vertexToAdd) {
+		vertexToAdd.forEach(x -> {
+			this.vertexs.add(x);
+		});
+
+		return vertexToAdd;
 	}
 
 	@Override
 	public boolean removeVertex(IVertex<TVertex> vertexToRemove) throws InvalidVertexException {
-		//this.verify(vertexToRemove);
+		if (this.containsVertex(vertexToRemove)) {
+			this.vertexs.remove(vertexToRemove);
+			return true;
+		}
 
-		return this.vertexs.remove(vertexToRemove);
+		return false;
 	}
 
 	@Override
@@ -137,14 +124,14 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge>, Cloneable 
 	}
 
 	@Override
-	public boolean areAdjacents(IVertex<TVertex> source, IVertex<TVertex> destination) throws InvalidVertexException {
-		//this.verify(source);
+	public boolean areAdjacents(IVertex<TVertex> source, IVertex<TVertex> destination) {
+		if (!this.containsVertex(source) && !this.containsVertex(destination))
+			return false;
 
 		for (IVertex<TVertex> iVertex : vertexs) {
 			boolean isAdjacent = iVertex.isAdjacent(destination);
 			if (isAdjacent)
 				return true;
-
 		}
 
 		return false;
@@ -152,7 +139,6 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge>, Cloneable 
 
 	@Override
 	public int degreeOf(IVertex<TVertex> vertex) throws InvalidVertexException {
-		//this.verify(vertex);
 
 		return this.getVertex(vertex).getDegree();
 	}
@@ -198,6 +184,7 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge>, Cloneable 
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addEdge(IEdge<VEdge> edgeToAdd) throws InvalidVertexException, InvalidEdgeException {
 		IVertex<TVertex> source = (IVertex<TVertex>) edgeToAdd.getSource();
@@ -221,7 +208,7 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge>, Cloneable 
 	public boolean removeEdge(IEdge<VEdge> edgeToRemove) throws InvalidVertexException, InvalidEdgeException {
 		IVertex<TVertex> source = (IVertex<TVertex>) edgeToRemove.getSource();
 
-		//this.verify(source);
+		// this.verify(source);
 		source = this.getVertex(source);
 		for (IEdge<?> iEdge : source.getAllEdge()) {
 			iEdge = (IEdge<VEdge>) iEdge;
@@ -284,40 +271,6 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge>, Cloneable 
 	}
 
 	@Override
-	public String toString() {
-		return this.mountGrafoToMessage(false);
-	}
-
-	private String mountGrafoToMessage(boolean withData) {
-
-		String message = "";
-		
-		for (IVertex<TVertex> iVertex : vertexs) {
-
-			message += String.format("%s => {", iVertex.toString(withData), iVertex.getData());
-
-			for (IEdge<?> iEdge : iVertex.getAllEdge()) {
-
-				if (withData) {
-					message += String.format(" ((%s)[%s])", iEdge.getDestination().toString(withData), iEdge.getData());
-				} else {
-					message += String.format(" %s", iEdge.getDestination());
-				}
-
-			}
-			message += " }\n";
-		}
-		return message;
-	}
-
-	@Override
-	public String toString(boolean withData) {
-
-		return this.mountGrafoToMessage(withData);
-
-	}
-
-	@Override
 	public IGraph<TVertex, VEdge> clone() {
 		IGraph<TVertex, VEdge> newGraph = new Graph<TVertex, VEdge>();
 
@@ -325,45 +278,75 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge>, Cloneable 
 
 		for (IEdge<VEdge> iEdge : allEdges) {
 			IVertex<TVertex> u = new V<TVertex>(iEdge.getSource().getLabel(), (TVertex) iEdge.getSource().getData());
-			IVertex<TVertex> v = new V<TVertex>(iEdge.getDestination().getLabel(), (TVertex) iEdge.getDestination().getData());
-			
-			try {
-				newGraph.addVertex(u);
-			} catch (InvalidVertexException e) {
-			} 
-			try {
-				newGraph.addVertex(v);
-			} catch (InvalidVertexException e1) {
-				// TODO Auto-generated catch block
-				//e1.printStackTrace();
-			}
-			
+			IVertex<TVertex> v = new V<TVertex>(iEdge.getDestination().getLabel(),
+					(TVertex) iEdge.getDestination().getData());
+
+			newGraph.addVertex(u);
+			newGraph.addVertex(v);
+
 			try {
 				IEdge<VEdge> newEdge = new E<VEdge>(u, v, iEdge.getData());
 				newGraph.addEdge(newEdge);
 			} catch (InvalidVertexException e) {
 				// TODO Auto-generated catch block
-				//e.printStackTrace();
+				// e.printStackTrace();
 			} catch (InvalidEdgeException e) {
 				// TODO Auto-generated catch block
-				//e.printStackTrace();
+				// e.printStackTrace();
 			}
 
 		}
 
 		return newGraph;
 	}
-	
+
 	@Override
 	public boolean isBridge(IDepthFirstSearchBridge<TVertex, VEdge> search, IEdge<VEdge> edgeTarget)
 			throws InvalidEdgeException, InvalidVertexException {
-		
+
 		IDepthFirstSearchBridge<TVertex, VEdge> _search = new DepthFirstSearchBridge<TVertex, VEdge>(this.clone());
-		
+
 		return _search.isBridge(edgeTarget);
+
+	}
+	
+	@Override
+	public String toString() {
+		return this.mountGrafoToMessage(false);
+	}
+	
+	@Override
+	public String toString(boolean withData) {
+		
+		return this.mountGrafoToMessage(withData);
 		
 	}
-
-
+	
+	@SuppressWarnings("unchecked")
+	public String toString(GraphPrintPresentation typePresentation){
+		return GraphPrintPresentationFactory.instance(typePresentation).mountGrafoToMessage(this);
+	}
+	
+	private String mountGrafoToMessage(boolean withData) {
+		
+		String message = "";
+		
+		for (IVertex<TVertex> iVertex : vertexs) {
+			
+			message += String.format("%s => {", iVertex.toString(withData), iVertex.getData());
+			
+			for (IEdge<?> iEdge : iVertex.getAllEdge()) {
+				
+				if (withData) {
+					message += String.format(" ((%s)[%s])", iEdge.getDestination().toString(withData), iEdge.getData());
+				} else {
+					message += String.format(" %s", iEdge.getDestination());
+				}
+				
+			}
+			message += " }\n";
+		}
+		return message;
+	}
 
 }

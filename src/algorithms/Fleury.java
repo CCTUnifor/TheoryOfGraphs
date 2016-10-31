@@ -3,11 +3,10 @@ package algorithms;
 import java.util.Iterator;
 import java.util.Set;
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
-
 import entities.E;
 import entities.Graph;
 import entities.V;
+import enums.GraphPrintPresentation;
 import exceptions.IllegalGraphFormatException;
 import exceptions.InvalidEdgeException;
 import exceptions.InvalidVertexException;
@@ -26,6 +25,7 @@ public class Fleury<Ve, Ee> implements IFleury<Ve, Ee> {
 	public Fleury(IGraph<Ve, Ee> graph, IDepthFirstSearchBridge<Ve, Ee> search) {
 		this.originalGraph = graph.clone();
 		this.tourEuler = new Graph<Ve, Ee>();
+		//this.tourEuler.addVertex(this.originalGraph.getAllVertex());
 		this.search = search;
 	}
 
@@ -36,20 +36,25 @@ public class Fleury<Ve, Ee> implements IFleury<Ve, Ee> {
 
 		source = this.originalGraph.getVertex(source);
 
+		int iteration = 0;
+
 		while (!this.originalGraph.isEmpty()) {
 
+			iteration++;
 			if (source.isLeaf())
 				throw new IllegalGraphFormatException("Not Eulerian Graph");
+
+			System.out.println("------------------------ #" + iteration + " ------------------------------\n");
 
 			IEdge<Ee> chosenEdge = this.getNotBridge(source);
 
 			this.addVertexEdgesToTour(chosenEdge);
 			this.removeEdgesToOrinalGraph(chosenEdge);
 
-			System.out.println(String.format("Chosen Edge: %s\n", chosenEdge.toString()));
+			System.out.println(String.format("\nChosen Edge: %s\n", chosenEdge.toString()));
 
-			System.out.println("Original Graph: \n");
-			System.out.println(this.originalGraph.toString(false));
+			System.out.println("Eulerian Tour: \n");
+			System.out.println(this.tourEuler.toString(GraphPrintPresentation.ADJACENT));
 
 			source = this.originalGraph.getVertex((IVertex<Ve>) chosenEdge.getDestination());
 
@@ -60,7 +65,7 @@ public class Fleury<Ve, Ee> implements IFleury<Ve, Ee> {
 
 	@SuppressWarnings("unchecked")
 	private IEdge<Ee> getNotBridge(IVertex<Ve> source) throws InvalidEdgeException, InvalidVertexException {
-		
+
 		IEdge<Ee> edge = (IEdge<Ee>) source.getAllEdge().iterator().next();
 
 		this.originalGraph.resetConfigs();
@@ -68,14 +73,14 @@ public class Fleury<Ve, Ee> implements IFleury<Ve, Ee> {
 		Set<IEdge<?>> allEdges = source.getAllEdge();
 		Iterator<IEdge<?>> iterator = allEdges.iterator();
 		int count = allEdges.size();
-		
+
 		for (int i = 0; i < count; i++) {
 			IEdge<?> iEdge = iterator.next();
-			
+
 			int si = allEdges.size();
-			
+
 			boolean isBridge = this.originalGraph.isBridge(search, (IEdge<Ee>) iEdge);
-			
+
 			System.out.println(String.format("Visited Edge: %s", iEdge.toString()));
 			System.out.println(String.format("   Is bridge: %s", isBridge));
 
@@ -83,7 +88,7 @@ public class Fleury<Ve, Ee> implements IFleury<Ve, Ee> {
 				return (IEdge<Ee>) iEdge;
 			}
 
-			 edge = (IEdge<Ee>) iEdge;
+			edge = (IEdge<Ee>) iEdge;
 		}
 
 		return edge;

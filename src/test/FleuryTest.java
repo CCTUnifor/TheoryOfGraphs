@@ -27,6 +27,14 @@ public class FleuryTest {
 		
 	}
 	
+	@Test(expected = IllegalGraphFormatException.class)
+	public void Graph03DeveRetornarAExcecaoIllegalGraphFormat() throws IOException, InvalidVertexException, PathDontFoundedException, IllegalGraphFormatException, InvalidEdgeException {
+		
+		String namePath = "Enter_Graphs/Graph03.txt";
+		this.executeFleury(namePath);
+		
+	}
+	
 	private void executeFleury(String namePath)
 			throws IOException, InvalidVertexException, PathDontFoundedException, IllegalGraphFormatException, InvalidEdgeException {
 

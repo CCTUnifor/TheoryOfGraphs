@@ -1,6 +1,7 @@
 package algorithms;
 
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import entities.E;
@@ -21,22 +22,27 @@ public class Fleury<Ve, Ee> implements IFleury<Ve, Ee> {
 	private IGraph<Ve, Ee> originalGraph;
 	private IGraph<Ve, Ee> tourEuler;
 	IDepthFirstSearchBridge<Ve, Ee> search;
+	public Set<IEdge<Ee>> lista;
 
 	public Fleury(IGraph<Ve, Ee> graph, IDepthFirstSearchBridge<Ve, Ee> search) {
 		this.originalGraph = graph.clone();
 		this.tourEuler = new Graph<Ve, Ee>();
 		//this.tourEuler.addVertex(this.originalGraph.getAllVertex());
 		this.search = search;
+		lista = new LinkedHashSet<IEdge<Ee>>();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public IGraph<Ve, Ee> search(IVertex<Ve> source)
+	public Set<IEdge<Ee>> search(IVertex<Ve> source)
 			throws IllegalGraphFormatException, InvalidVertexException, InvalidEdgeException {
 
 		source = this.originalGraph.getVertex(source);
 
 		int iteration = 0;
+		
+		if(this.originalGraph.isEmpty())
+			throw new IllegalGraphFormatException("Not Eulerian Graph");
 
 		while (!this.originalGraph.isEmpty()) {
 
@@ -47,20 +53,23 @@ public class Fleury<Ve, Ee> implements IFleury<Ve, Ee> {
 			System.out.println("------------------------ #" + iteration + " ------------------------------\n");
 
 			IEdge<Ee> chosenEdge = this.getNotBridge(source);
-
+			this.lista.add(chosenEdge);
+			
 			this.addVertexEdgesToTour(chosenEdge);
 			this.removeEdgesToOrinalGraph(chosenEdge);
 
 			System.out.println(String.format("\nChosen Edge: %s\n", chosenEdge.toString()));
 
 			System.out.println("Eulerian Tour: \n");
-			System.out.println(this.tourEuler.toString(GraphPrintPresentation.ADJACENT));
+			//System.out.println(this.tourEuler.toString(GraphPrintPresentation.ADJACENT));
 
 			source = this.originalGraph.getVertex((IVertex<Ve>) chosenEdge.getDestination());
+			
+			System.out.println(this.lista);
 
 		}
 
-		return this.tourEuler;
+		return this.lista;
 	}
 
 	@SuppressWarnings("unchecked")

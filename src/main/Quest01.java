@@ -8,6 +8,8 @@ import algorithms.DepthFirstSearchBridge;
 import algorithms.Fleury;
 import entities.V;
 import exceptions.IllegalGraphFormatException;
+import exceptions.InvalidEdgeException;
+import exceptions.InvalidVertexException;
 import interfaces.IDepthFirstSearchBridge;
 import interfaces.IFleury;
 import interfaces.IGraph;
@@ -37,6 +39,11 @@ public class Quest01 {
 		
 		System.out.println("\nSelected File: " + fileName+"\n");
 		
+		executeFleury(filePath);
+	}
+	
+	private static void executeFleury(String filePath) throws IOException, IllegalGraphFormatException, InvalidVertexException, InvalidEdgeException {
+		
 		ConvertsGraph<Integer, Integer> convert = new ConvertsGraph<Integer, Integer>();
 		IGraph<Integer, Integer> graph = null;
 		
@@ -44,12 +51,12 @@ public class Quest01 {
 			graph = convert.converter(filePath);
 		} catch (IOException e) {
 			System.out.println("Não foi possível encontrar esse arquivo.");
-			throw new Exception();
+			throw new IOException();
 		}
-
+		
 		System.out.println("Graph Converted to .txt from Computational Representation\n");
 		System.out.println(graph.toString(false));
-
+		
 		IDepthFirstSearchBridge<Integer, Integer> search = new DepthFirstSearchBridge<Integer, Integer>(graph.clone());
 		
 		IFleury<Integer, Integer> fleury = new Fleury<Integer, Integer>(graph, search);
@@ -59,7 +66,7 @@ public class Quest01 {
 		try {
 			fleury.search(u);
 		} catch (IllegalGraphFormatException e) {
-			System.out.println("\n******** Is not a Eulerian Graph. **********");
+			System.out.println("\n"+e.getMessage());
 		}
 		
 	}

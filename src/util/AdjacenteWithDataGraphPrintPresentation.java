@@ -13,7 +13,7 @@ public class AdjacenteWithDataGraphPrintPresentation<V, E> implements IGraphPrin
 
 		for (IVertex<?> iVertex : graph.getAllVertex()) {
 
-			message += String.format("(%s)[%s] => {", iVertex.toString(), iVertex.getData());
+			message += String.format("(%s) => {", iVertex.toString(true));
 
 			for (IEdge<?> iEdge : iVertex.getAllEdge()) {
 

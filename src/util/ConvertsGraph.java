@@ -33,7 +33,7 @@ public class ConvertsGraph<TVertex, VEdge> {
 
 			String[] verticesAdj = linha.split(" ");
 
-			IVertex<TVertex> u = new V<TVertex>(countX + "", (TVertex) verticesAdj[countX]);
+			IVertex<TVertex> u = new V<TVertex>(countX + "");
 
 			graph.addVertex(u);
 
@@ -44,7 +44,7 @@ public class ConvertsGraph<TVertex, VEdge> {
 				if (countX != countY) {
 
 					if (!(vertice.equals("0") || vertice.equals("inf"))) {
-						IVertex<TVertex> v = new V<TVertex>(countY + "", (TVertex) vertice);
+						IVertex<TVertex> v = new V<TVertex>(countY + "");
 
 						graph.addVertex(v);
 						try {

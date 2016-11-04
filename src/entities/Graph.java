@@ -333,7 +333,7 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge>, Cloneable 
 		
 		for (IVertex<TVertex> iVertex : vertexs) {
 			
-			message += String.format("%s => {", iVertex.toString(withData), iVertex.getData());
+			message += String.format("%s => {", iVertex.toString(withData));
 			
 			for (IEdge<?> iEdge : iVertex.getAllEdge()) {
 				

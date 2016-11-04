@@ -118,7 +118,7 @@ public class V<T> implements IVertex<T> {
 
 	@Override
 	public String toString(boolean withData) {
-		if (withData)
+		if (withData && this.data != null)
 			return String.format("%s[%s]", this.getLabel(), this.getData());
 		
 		return String.format("%s",  this.getLabel());

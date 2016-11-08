@@ -143,6 +143,15 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge>, Cloneable 
 		return this.getVertex(vertex).getDegree();
 	}
 
+	@Override
+	public IEdge<VEdge> getEdge(IVertex<TVertex> source, IVertex<TVertex> destination){
+		for (IEdge<VEdge> iEdge : this.getAllEdge()) {
+			if (iEdge.getSource().equals(source) && iEdge.getDestination().equals(destination))
+				return iEdge;
+		}
+		return null;
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public Set<IEdge<VEdge>> getAllEdge() {
@@ -219,7 +228,7 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge>, Cloneable 
 	}
 
 	@Override
-	public boolean removeAllEdge() throws InvalidEdgeException, InvalidVertexException {
+	public boolean removeAllEdge(){
 
 		for (IVertex<TVertex> iVertex : vertexs) {
 			boolean isRemoved = this.removeAllEdge(iVertex);
@@ -233,11 +242,9 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge>, Cloneable 
 	}
 
 	@Override
-	public boolean removeAllEdge(IVertex<TVertex> vertextTarget) throws InvalidVertexException, InvalidEdgeException {
-		this.verify(vertextTarget);
-
+	public boolean removeAllEdge(IVertex<TVertex> vertextTarget) {
+		//this.verify(vertextTarget);
 		return this.getVertex(vertextTarget).removeAllEdge();
-
 	}
 
 	@Override
@@ -301,7 +308,7 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge>, Cloneable 
 	}
 
 	@Override
-	public boolean isBridge(IDepthFirstSearchBridge<TVertex, VEdge> search, IEdge<VEdge> edgeTarget)
+	public boolean isBridge(IEdge<VEdge> edgeTarget)
 			throws InvalidEdgeException, InvalidVertexException {
 
 		IDepthFirstSearchBridge<TVertex, VEdge> _search = new DepthFirstSearchBridge<TVertex, VEdge>(this.clone());

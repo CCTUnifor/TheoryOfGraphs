@@ -15,6 +15,7 @@ public class V<T> implements IVertex<T> {
 	private String label;
 	private int positionArray;
 	private T data;
+	private int width;
 	
 	private Colors color;
 	private IVertex<T> ancestor;
@@ -25,6 +26,15 @@ public class V<T> implements IVertex<T> {
 		this.adjacenteEdges = new LinkedHashSet<IEdge<?>>();
 		this.label = label;
 		this.resetConfigs();
+		this.width = 0;
+	}
+	
+	public int getWidth(){
+		return this.width;
+	}
+	
+	public void setWidth(int width){
+		this.width = width;
 	}
 	
 	public V(String label, T data) {
@@ -184,4 +194,9 @@ public class V<T> implements IVertex<T> {
 		return (this.adjacenteEdges.size() == 0); // DANGER!! 
 	}
 
+	@Override
+	public V<T> clone(){
+		return new V<T>(this.label, this.data);
+	}
+	
 }

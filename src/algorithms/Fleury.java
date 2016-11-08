@@ -21,14 +21,11 @@ public class Fleury<Ve, Ee> implements IFleury<Ve, Ee> {
 
 	private IGraph<Ve, Ee> originalGraph;
 	private IGraph<Ve, Ee> tourEuler;
-	IDepthFirstSearchBridge<Ve, Ee> search;
 	public Set<IEdge<Ee>> lista;
 
-	public Fleury(IGraph<Ve, Ee> graph, IDepthFirstSearchBridge<Ve, Ee> search) {
+	public Fleury(IGraph<Ve, Ee> graph) {
 		this.originalGraph = graph.clone();
 		this.tourEuler = new Graph<Ve, Ee>();
-		//this.tourEuler.addVertex(this.originalGraph.getAllVertex());
-		this.search = search;
 		lista = new LinkedHashSet<IEdge<Ee>>();
 	}
 
@@ -86,9 +83,7 @@ public class Fleury<Ve, Ee> implements IFleury<Ve, Ee> {
 		for (int i = 0; i < count; i++) {
 			IEdge<?> iEdge = iterator.next();
 
-			int si = allEdges.size();
-
-			boolean isBridge = this.originalGraph.isBridge(search, (IEdge<Ee>) iEdge);
+			boolean isBridge = this.originalGraph.isBridge((IEdge<Ee>) iEdge);
 
 			System.out.println(String.format("Visited Edge: %s", iEdge.toString()));
 			System.out.println(String.format("   Is bridge: %s", isBridge));

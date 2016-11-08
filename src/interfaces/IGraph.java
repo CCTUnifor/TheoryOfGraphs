@@ -42,7 +42,9 @@ public interface IGraph<T, V> {
 	int degreeOf(IVertex<T> vertex) throws InvalidVertexException;
 	
 	/* EDGE */
-
+	
+	IEdge<V> getEdge(IVertex<T> source, IVertex<T> destination);
+	
 	Set<IEdge<V>> getAllEdge();
 	
 	Set<IEdge<V>> getAllEdge(IVertex<T> vertexTarget) throws InvalidVertexException;
@@ -55,7 +57,7 @@ public interface IGraph<T, V> {
 	
 	boolean removeEdge(IEdge<V> edgeToRemove) throws InvalidVertexException, InvalidEdgeException;
 	
-	boolean removeAllEdge() throws InvalidEdgeException, InvalidVertexException;
+	boolean removeAllEdge();
 	
 	boolean removeAllEdge(IVertex<T> vertextTarget) throws InvalidVertexException, InvalidEdgeException;
 	
@@ -65,6 +67,6 @@ public interface IGraph<T, V> {
 	
 	Set<IEdge<V>> getDistinctEdge(IVertex<T> vertexTarget) throws InvalidVertexException;
 	
-	boolean isBridge(IDepthFirstSearchBridge<T, V> search, IEdge<V> edgeTarget) throws InvalidEdgeException, InvalidVertexException;
+	boolean isBridge(IEdge<V> edgeTarget) throws InvalidEdgeException, InvalidVertexException;
 	
 }

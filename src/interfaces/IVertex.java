@@ -46,7 +46,12 @@ public abstract interface IVertex<T> {
 	int getTimeFinish();
 	void setTimeFinish(int timeFinish);
 	
+	int getWidth();
+	void setWidth(int width);
+	
 	String toString();
 	String toString(boolean withData);
+	
+	IVertex<T> clone();
 	
 }

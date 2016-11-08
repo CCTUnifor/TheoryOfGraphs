@@ -57,9 +57,7 @@ public class Quest01 {
 		System.out.println("Graph Converted to .txt from Computational Representation\n");
 		System.out.println(graph.toString(false));
 		
-		IDepthFirstSearchBridge<Integer, Integer> search = new DepthFirstSearchBridge<Integer, Integer>(graph.clone());
-		
-		IFleury<Integer, Integer> fleury = new Fleury<Integer, Integer>(graph, search);
+		IFleury<Integer, Integer> fleury = new Fleury<Integer, Integer>(graph);
 		
 		IVertex<Integer> u = new V<Integer>("0");
 		

@@ -1,6 +1,7 @@
 package algorithms;
 
 import entities.Graph;
+import enums.GraphPrintPresentation;
 import exceptions.IllegalGraphFormatException;
 import exceptions.InvalidEdgeException;
 import exceptions.InvalidVertexException;
@@ -16,11 +17,13 @@ public class PrimMinimalSpanningTree<V, Ed> implements IMinimalSpanningTree<V, E
 	private IGraph<V, Ed> resultMSPGraph;
 	private IGraph<V, Ed> subGraph;
 	IHeapMin<Integer, IVertex<V>> heapMin;
+	private int valueMST;
 
 	public PrimMinimalSpanningTree(IGraph<V, Ed> graph) {
 		this.graph = graph.clone();
 		resultMSPGraph = new Graph<V, Ed>();
 		heapMin = new HeapMin<Integer, IVertex<V>>();
+		this.valueMST = 0;
 	}
 
 	@Override
@@ -29,23 +32,41 @@ public class PrimMinimalSpanningTree<V, Ed> implements IMinimalSpanningTree<V, E
 		this.loadAllVertex();
 		this.loadHeap();
 
-		while (this.resultMSPGraph.getAllEdge().size() < this.graph.getAllVertex().size() - 1) {
-
+		while (!this.heapMin.isEmpty()) {
+			
+			System.out.println("\n--------------------------------------------------------------\n");
+			
 			IVertex<V> vertexMin = this.heapMin.remove();
-			if (vertexMin != null && vertexMin.getAncestor() != null) {
+
+			System.out.println(String.format("Vertex with min width: (%s)[%s]", vertexMin.toString(true), vertexMin.getWidth()));
+			
+ 			if (vertexMin != null && vertexMin.getAncestor() != null) {
 				IEdge<Ed> edge = this.graph.getEdge(vertexMin, vertexMin.getAncestor());
 				this.resultMSPGraph.addEdge(edge);
+				this.resultMSPGraph.addEdge(edge.getReverse());
+				
+				this.valueMST += (vertexMin.getWidth() * 2);
 			}
-
+			
+			System.out.println("\n--------- Relaxation -------------");
+			
 			for (IEdge<Ed> iEdge : this.graph.getAllEdge(vertexMin)) {
-				IVertex<V> adj = (IVertex<V>) iEdge.getDestination();
-
+				IVertex<V> adj = this.graph.getVertex((IVertex<V>) iEdge.getDestination());
+				
+				System.out.println("\n");
+				System.out.println(String.format("  Edge: %s[%s]", iEdge.toString(), iEdge.getData()));
+				System.out.println(String.format("  Vertex destination: (%s)[%s]", adj.toString(), adj.getWidth()));
+				
 				if (this.heapMin.isExists(adj) && Integer.parseInt(iEdge.getData().toString()) < adj.getWidth()) {
+					int value = Integer.parseInt(iEdge.getData().toString());
 					adj.setWidth(Integer.parseInt(iEdge.getData().toString()));
 					adj.setAncestor(vertexMin);
 					this.heapMin.insert(adj.getWidth(), adj);
+					//this.heapMin.rebuildHeap();
+					
+					System.out.println(String.format("  Destination changed: %s[%s]", adj.toString(), adj.getWidth()));
 				}
-
+				
 			}
 
 		}
@@ -55,13 +76,18 @@ public class PrimMinimalSpanningTree<V, Ed> implements IMinimalSpanningTree<V, E
 
 	@Override
 	public boolean isMinimalSpanningTree(IGraph<V, Ed> subGraph) throws IllegalGraphFormatException {
-		boolean isMST = false;
+		
 		this.subGraph = subGraph.clone();
 
 		this.verifyVertex();
 		this.verifyEdges();
 
-		return isMST;
+		int minValueSubGraph = 0;
+		for (IEdge<Ed> iEdge : this.subGraph.getAllEdge()) {
+			minValueSubGraph += Integer.parseInt(iEdge.getData().toString());
+		}
+		
+		return (minValueSubGraph <= this.valueMST);
 	}
 
 	private void verifyVertex() throws IllegalGraphFormatException {
@@ -103,10 +129,15 @@ public class PrimMinimalSpanningTree<V, Ed> implements IMinimalSpanningTree<V, E
 		for (IVertex<V> iVertex : this.graph.getAllVertex()) {
 			if (!iVertex.equals(firstVertex)){
 				iVertex.setWidth(Integer.MAX_VALUE);
-				this.heapMin.insert(Integer.MAX_VALUE, iVertex);
+				this.heapMin.insert(iVertex.getWidth(), iVertex);
 			}
 		}
 
+	}
+
+	@Override
+	public int getValueMST() {
+		return this.valueMST;
 	}
 
 }

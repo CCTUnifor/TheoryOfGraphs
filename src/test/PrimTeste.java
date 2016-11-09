@@ -20,10 +20,10 @@ public class PrimTeste {
 	public void test() throws IOException, InvalidVertexException, InvalidEdgeException {
 		String namePath = "Enter_Graphs/Graph06.txt";
 		
-		this.executeFleury(namePath);
+		this.executePrim(namePath);
 	}
 	
-	private void executeFleury(String namePath) throws IOException, InvalidVertexException, InvalidEdgeException{
+	private void executePrim(String namePath) throws IOException, InvalidVertexException, InvalidEdgeException{
 
 		ConvertsGraph<Integer, Integer> convert = new ConvertsGraph<Integer, Integer>();
 		IGraph<Integer, Integer> graph = convert.converter(namePath);

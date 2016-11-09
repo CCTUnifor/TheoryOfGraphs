@@ -170,15 +170,12 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge>, Cloneable 
 	@Override
 	public Set<IEdge<VEdge>> getAllEdge(IVertex<TVertex> vertexTarget) throws InvalidVertexException {
 		Set<IEdge<VEdge>> allEdge = new LinkedHashSet<IEdge<VEdge>>();
-
-		for (IVertex<TVertex> v : this.vertexs) {
-			if (v.equals(vertexTarget)) {
-				Set<IEdge<?>> edges = v.getAllEdge();
-				allEdge.addAll((Collection<? extends IEdge<VEdge>>) edges);
-			}
-
+		IVertex<TVertex> vertex = this.getVertex(vertexTarget);
+		
+		for (IEdge<?> iEdge : vertex.getAllEdge()) {
+			allEdge.add((IEdge<VEdge>)iEdge);
 		}
-
+		
 		return allEdge;
 	}
 

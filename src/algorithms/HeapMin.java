@@ -22,6 +22,7 @@ public class HeapMin<Key extends Number, Value> implements IHeapMin<Key, Value> 
 			this.priorityQueue.add(no);			
 		}else{
 			no.setKey(key);
+			no.setValue(value);
 		}
 
 		this.rebuildHeap();
@@ -34,6 +35,7 @@ public class HeapMin<Key extends Number, Value> implements IHeapMin<Key, Value> 
 		
 		Value removed = this.priorityQueue.get(0).getValue(); 
 		this.priorityQueue.remove(0);
+		this.rebuildHeap();
 		
 		return removed;
 	}
@@ -48,7 +50,8 @@ public class HeapMin<Key extends Number, Value> implements IHeapMin<Key, Value> 
 		return this.priorityQueue.size();
 	}
 
-	private void rebuildHeap() {
+	@Override
+	public void rebuildHeap() {
 
 		int lengthQueue = this.getSize();
 

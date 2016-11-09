@@ -6,6 +6,8 @@ import org.junit.Test;
 
 import algorithms.PrimMinimalSpanningTree;
 import exceptions.IllegalGraphFormatException;
+import exceptions.InvalidEdgeException;
+import exceptions.InvalidVertexException;
 import interfaces.IGraph;
 import interfaces.IMinimalSpanningTree;
 import util.ConvertsGraph;
@@ -13,7 +15,7 @@ import util.ConvertsGraph;
 public class IsMST {
 
 	@Test
-	public void SuperGraphIs04_SubGraphIs05() throws IOException, IllegalGraphFormatException {
+	public void SuperGraphIs04_SubGraphIs05() throws IOException, IllegalGraphFormatException, InvalidVertexException, InvalidEdgeException {
 		
 		String namePath = "Enter_Graphs/Graph04.txt";
 		
@@ -31,9 +33,11 @@ public class IsMST {
 		System.out.println(subGraph.toString(false));
 		
 		IMinimalSpanningTree<Integer, Integer> MST = new PrimMinimalSpanningTree<Integer, Integer>(superGraph);
+		MST.search();
 		
 		boolean isMST = MST.isMinimalSpanningTree(subGraph);
 		
+		System.out.println(isMST);
 		
 	}
 

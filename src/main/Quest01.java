@@ -4,13 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
-import algorithms.DepthFirstSearchBridge;
 import algorithms.Fleury;
 import entities.V;
 import exceptions.IllegalGraphFormatException;
 import exceptions.InvalidEdgeException;
 import exceptions.InvalidVertexException;
-import interfaces.IDepthFirstSearchBridge;
 import interfaces.IFleury;
 import interfaces.IGraph;
 import interfaces.IVertex;
@@ -24,6 +22,7 @@ public class Quest01 {
 
 		Scanner scanner = new Scanner(System.in);
 		
+		System.out.println("Show me a Fleury Path.\n");
 		System.out.println("Select a file: ");
 		
 		File directores[] = allGraphsToChose();

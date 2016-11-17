@@ -1,0 +1,7 @@
+6
+inf 1 inf inf inf inf
+1 inf inf inf 2 inf
+inf inf inf inf 4 5
+inf inf inf inf 4 inf
+inf 2 4 4 inf inf
+inf inf 5 inf inf inf

@@ -13,7 +13,6 @@ public class V<T> implements IVertex<T> {
 
 	private Set<IEdge<?>> adjacenteEdges;
 	private String label;
-	private int positionArray;
 	private T data;
 	private int width;
 	
@@ -45,15 +44,6 @@ public class V<T> implements IVertex<T> {
 		this.resetConfigs();
 	}
 
-	public V(int positionArray, String label, T data) {
-		this.adjacenteEdges = new LinkedHashSet<IEdge<?>>();
-		this.label = label;
-		this.positionArray = positionArray;
-		this.data = data;
-		
-		this.resetConfigs();
-	}
-
 	public void resetConfigs(){
 		this.color = Colors.WHITE;
 		this.ancestor = null;
@@ -73,7 +63,11 @@ public class V<T> implements IVertex<T> {
 
 	@Override
 	public boolean containsEdge(IEdge<?> edgeTarget) throws InvalidEdgeException {
-		return (this.adjacenteEdges.contains(edgeTarget));
+		for (IEdge<?> iEdge : adjacenteEdges) {
+			if (iEdge.equals(edgeTarget))
+				return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -114,11 +108,6 @@ public class V<T> implements IVertex<T> {
 		this.adjacenteEdges = new LinkedHashSet<IEdge<?>>();
 
 		return true;
-	}
-
-	@Override
-	public int positionArray() {
-		return positionArray;
 	}
 
 	@Override

@@ -110,7 +110,7 @@ public class PrimMinimalSpanningTree<V, Ed> implements IMinimalSpanningTree<V, E
 		
 		for (IEdge<Ed> iEdge : this.subGraph.getAllEdge()) {
 			try {
-				if (!this.subGraph.isBridge(iEdge))
+				if (!this.subGraph.isBridge(iEdge) || !this.graph.containsEdge(iEdge))
 					throw new IllegalGraphFormatException("Is not a Minimal Spanning Tree");
 
 			} catch (InvalidEdgeException | InvalidVertexException e) {

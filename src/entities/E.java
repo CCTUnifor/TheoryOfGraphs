@@ -54,7 +54,8 @@ public class E<T> implements IEdge<T> {
 		E<T> edge = (E<T>) object;
 		
 		return (edge.getSource().equals(this.source) &&
-				edge.getDestination().equals(this.destination));
+				edge.getDestination().equals(this.destination) &&
+				edge.getData().equals(this.data));
 	}
 
 }

@@ -27,7 +27,7 @@ public class IsMST {
 	}
 	
 	@Test(expected = IllegalGraphFormatException.class)
-	public void SuperGraphIs05_SubGraphIs06() throws IOException, IllegalGraphFormatException, InvalidVertexException, InvalidEdgeException {
+	public void ThrowWhenPassFirstTheSuperGraph() throws IOException, IllegalGraphFormatException, InvalidVertexException, InvalidEdgeException {
 		
 		String superGraphPath = "Enter_Graphs/Graph05.txt";
 		String subGraphPath = "Enter_Graphs/Graph06.txt";
@@ -49,6 +49,32 @@ public class IsMST {
 		System.out.println(String.format("\nThis sub-graph is a Minimal Spanning Tree from this super-graph?\n%s", isMST, isMST));
 		
 	}
+
+	@Test(expected = IllegalGraphFormatException.class)
+	public void ThrowWhenPassTheSameGraphs() throws IOException, IllegalGraphFormatException, InvalidVertexException, InvalidEdgeException {
+		
+		String superGraphPath = "Enter_Graphs/Graph06.txt";
+		String subGraphPath = "Enter_Graphs/Graph06.txt";
+		
+		boolean isMST = this.isMST(superGraphPath, subGraphPath);
+		
+		System.out.println(String.format("\nThis sub-graph is a Minimal Spanning Tree from this super-graph?\n%s", isMST, isMST));
+		
+	}
+	
+
+	@Test(expected = IllegalGraphFormatException.class)
+	public void ThrowWhenTheWidthOfEdgesIsDiferents() throws IOException, IllegalGraphFormatException, InvalidVertexException, InvalidEdgeException {
+		
+		String superGraphPath = "Enter_Graphs/Graph09.txt";
+		String subGraphPath = "Enter_Graphs/Graph10.txt";
+		
+		boolean isMST = this.isMST(superGraphPath, subGraphPath);
+		
+		System.out.println(String.format("\nThis sub-graph is a Minimal Spanning Tree from this super-graph?\n%s", isMST, isMST));
+		
+	}
+	
 	
 	private boolean isMST(String superGraphPath, String subGraphPath) throws IOException, InvalidVertexException, InvalidEdgeException, IllegalGraphFormatException{
 		

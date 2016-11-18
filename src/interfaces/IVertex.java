@@ -28,12 +28,8 @@ public abstract interface IVertex<T> {
 	
 	int getDegree();
 	
-	boolean equals(Object object);
-	
 	boolean isAdjacent(IVertex<T> destination);
-	
-	int positionArray();
-	
+		
 	Colors getColor();
 	void setColor(Colors color);
 	
@@ -52,6 +48,7 @@ public abstract interface IVertex<T> {
 	String toString();
 	String toString(boolean withData);
 	
+	boolean equals(Object object);
 	IVertex<T> clone();
 	
 }

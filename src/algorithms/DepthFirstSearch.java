@@ -14,6 +14,7 @@ public class DepthFirstSearch<V, E> extends GraphFirstSearch<V, E> {
 	public DepthFirstSearch(IGraph<V, E> graph) {
 		this.graph = graph.clone();
 		time = 0;
+		this.numberConnectedComponent = 0;
 	}
 
 	@Override
@@ -21,6 +22,7 @@ public class DepthFirstSearch<V, E> extends GraphFirstSearch<V, E> {
 
 		for (IVertex<V> iVertex : this.graph.getAllVertex()) {
 			if (iVertex.getColor() == Colors.WHITE)
+				this.numberConnectedComponent++;
 				this.runDFS(iVertex);
 		}
 
@@ -67,5 +69,4 @@ public class DepthFirstSearch<V, E> extends GraphFirstSearch<V, E> {
 		}
 
 	}
-
 }

@@ -1,12 +1,12 @@
 package algorithms;
 
 import entities.Graph;
-import enums.GraphPrintPresentation;
 import exceptions.IllegalGraphFormatException;
 import exceptions.InvalidEdgeException;
 import exceptions.InvalidVertexException;
 import interfaces.IEdge;
 import interfaces.IGraph;
+import interfaces.IGraphFirstSearch;
 import interfaces.IHeapMin;
 import interfaces.IMinimalSpanningTree;
 import interfaces.IVertex;
@@ -81,6 +81,7 @@ public class PrimMinimalSpanningTree<V, Ed> implements IMinimalSpanningTree<V, E
 
 		this.verifyVertex();
 		this.verifyEdges();
+		this.verifyConnectedComponent();
 
 		int minValueSubGraph = 0;
 		for (IEdge<Ed> iEdge : this.subGraph.getAllEdge()) {
@@ -104,6 +105,9 @@ public class PrimMinimalSpanningTree<V, Ed> implements IMinimalSpanningTree<V, E
 
 	private void verifyEdges() throws IllegalGraphFormatException {
 
+		if (this.subGraph.getAllEdge().size() == 0)
+			throw new IllegalGraphFormatException("Is not a Minimal Spanning Tree");
+		
 		for (IEdge<Ed> iEdge : this.subGraph.getAllEdge()) {
 			try {
 				if (!this.subGraph.isBridge(iEdge))
@@ -115,6 +119,16 @@ public class PrimMinimalSpanningTree<V, Ed> implements IMinimalSpanningTree<V, E
 		}
 	}
 
+	private void verifyConnectedComponent() throws IllegalGraphFormatException {
+		IGraphFirstSearch<V, Ed> DFS = new DepthFirstSearch<V, Ed>(this.subGraph);
+		IVertex<V> source = this.subGraph.getAllVertex().iterator().next();
+		
+		DFS.search(source);
+		
+		if (DFS.getNumberConnectedComponent() > 1 )
+			throw new IllegalGraphFormatException("Is not a Minimal Spanning Tree");
+	}
+	
 	private void loadAllVertex() {
 		for (IVertex<V> iVertex : this.graph.getAllVertex()) {
 			this.resultMSPGraph.addVertex(iVertex.clone());

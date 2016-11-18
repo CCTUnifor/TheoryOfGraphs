@@ -31,6 +31,10 @@ public class DepthFirstSearchBridge<V, E> extends IDepthFirstSearchBridge<V, E> 
 
 		for (IVertex<V> iVertex : this.graphAux.getAllVertex()) {
 			if (iVertex.getColor() == Colors.WHITE) {
+				
+				if (this.numberConnectedComponent > 1)
+					return true;
+				
 				this.numberConnectedComponent++;
 				this.runDFS(iVertex);
 			}

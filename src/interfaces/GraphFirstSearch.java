@@ -6,6 +6,7 @@ import exceptions.PathDontFoundedException;
 public abstract class GraphFirstSearch<V, E> implements IGraphFirstSearch<V, E> {
 	
 	protected IGraph<V, E> graph;
+	protected int numberConnectedComponent; 
 	
 	@Override
 	public String pathToFrom(IVertex<V> source, IVertex<V> destination) throws PathDontFoundedException, InvalidVertexException {
@@ -28,4 +29,8 @@ public abstract class GraphFirstSearch<V, E> implements IGraphFirstSearch<V, E> 
 		return path;
 	}
 	
+	@Override
+	public int getNumberConnectedComponent() {
+		return this.numberConnectedComponent;
+	}
 }

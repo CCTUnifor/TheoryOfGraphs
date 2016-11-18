@@ -7,6 +7,7 @@ import interfaces.IHeapMin;
 
 public class HeapMin<Key extends Number, Value> implements IHeapMin<Key, Value> {
 
+	
 	private ArrayList<NoHeap<Key, Value>> priorityQueue;
 
 	public HeapMin() {

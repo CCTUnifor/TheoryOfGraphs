@@ -4,14 +4,12 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import algorithms.DepthFirstSearchBridge;
 import algorithms.Fleury;
 import entities.V;
 import exceptions.IllegalGraphFormatException;
 import exceptions.InvalidEdgeException;
 import exceptions.InvalidVertexException;
 import exceptions.PathDontFoundedException;
-import interfaces.IDepthFirstSearchBridge;
 import interfaces.IFleury;
 import interfaces.IGraph;
 import interfaces.IVertex;
@@ -49,7 +47,6 @@ public class FleuryTest {
 		IVertex<Integer> u = new V<Integer>("0");
 		
 		fleury.search(u);
-		
 		
 	}
 

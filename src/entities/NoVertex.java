@@ -19,27 +19,23 @@ public class NoVertex {
 	private int timeFinish;
 	
 	public NoVertex(String label){
-		this.listAdjacente = new LinkedHashSet<NoVertex>();
-		this.label = label;
-		this.widthVertex = 0;
-		this.widthEdge = 0;
-		
-		this.color = Colors.WHITE;
-		this.ancestor = null;
-		this.timeStart = 0;
-		this.timeFinish = 0;
+		this(label, 0);
 	}
 	
 	public NoVertex(String label, int width){
+		this(label, width, 0);
+	}
+	
+	public NoVertex(String label, int width, int widthEdge) {
 		this.listAdjacente = new LinkedHashSet<NoVertex>();
 		this.label = label;
 		this.widthVertex = width;
-		this.widthEdge = 0;
+		this.widthEdge = widthEdge;
 		
 		this.color = Colors.WHITE;
 		this.ancestor = null;
 		this.timeStart = 0;
-		this.timeFinish = 0;
+		this.timeFinish = 0;		
 	}
 	
 	public Set<NoVertex> getAdjacentes(){
@@ -50,10 +46,11 @@ public class NoVertex {
 		return this.listAdjacente.add(noVertex);
 	}
 	
-	public void removeAdjacente(NoVertex noVertex){
+	public boolean removeAdjacente(NoVertex noVertex){
 		noVertex = this.find(noVertex);
 		if (noVertex != null)
-			this.listAdjacente.remove(noVertex);
+			return this.listAdjacente.remove(noVertex);
+		return false;
 	}
 	
 	public boolean isAdjacent(NoVertex destination){
@@ -61,7 +58,7 @@ public class NoVertex {
 	}
 	
 	public boolean isLeaf(){
-		return (this.listAdjacente.size() > 0);
+		return (this.listAdjacente.size() == 0);
 	}
 	
 	public int getDegree(){

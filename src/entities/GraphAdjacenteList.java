@@ -3,6 +3,8 @@ package entities;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import algorithms.DepthFirstSearchBridgeAdjacent;
+
 public class GraphAdjacenteList {
 	
 	private Set<NoVertex> vertexs;
@@ -62,19 +64,26 @@ public class GraphAdjacenteList {
 	
 	public boolean addEdge(NoVertex source, NoVertex destination, int widthEdge){
 		source = this.getVertex(source);
-		//destination = this.getVertex(destination);
 		
-		if (source == null && this.getVertex(destination) == null)
+		if (source == null || this.getVertex(destination) == null)
 			return false;
 		
 		destination.setWidthEdge(widthEdge);
-		//destination = new NoVertex(destination.getLabel(), destination.getWidth());
-		//destination.setWidthEdge(widthEdge);
-		
+		destination.setAncestor(source);
 		return source.addAdjacente(destination);
 	}
 	
-	public Set<NoVertex> getAdjacents(NoVertex vertexTarget){
+	public boolean removeEdge(NoVertex source, NoVertex destination){
+		source = this.getVertex(source);
+		destination = this.getVertex(destination);
+		
+		if (source == null || destination == null)
+			return false;
+		
+		return source.removeAdjacente(destination);
+	}
+	
+	public Set<NoVertex> getAllAdjacents(NoVertex vertexTarget){
 		NoVertex no = this.getVertex(vertexTarget);
 
 		if (no == null)
@@ -82,6 +91,16 @@ public class GraphAdjacenteList {
 		
 		return no.getAdjacentes();
 		
+	}
+	
+	public Set<NoVertex> getAllAdjacents(){
+		Set<NoVertex> all = new LinkedHashSet<>();
+		
+		for (NoVertex source : this.vertexs) {
+			all.addAll(source.getAdjacentes());
+		}
+		
+		return all;
 	}
 	
 	public boolean areAdjacents(NoVertex source, NoVertex destination){
@@ -109,6 +128,30 @@ public class GraphAdjacenteList {
 		}
 		
 		return message;
+	}
+	
+	@Override
+	public GraphAdjacenteList clone(){
+		GraphAdjacenteList newGraph = new GraphAdjacenteList();
+		
+		for (NoVertex vertex : vertexs) {
+			newGraph.addVertex(new NoVertex(vertex.getLabel(), vertex.getWidth(), vertex.getWidthEdge()));
+		}
+		
+		for (NoVertex vertex : vertexs) {
+			for (NoVertex adj : vertex.getAdjacentes()) {
+				newGraph.addEdge(vertex, adj, adj.getWidthEdge());
+			}
+		}
+		
+		return newGraph;
+	}
+
+	public boolean isBridge(NoVertex destination) {
+		
+		DepthFirstSearchBridgeAdjacent DFS = new DepthFirstSearchBridgeAdjacent(this);
+		
+		return DFS.isBridge(destination);
 	}
 	
 }

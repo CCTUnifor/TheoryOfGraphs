@@ -12,7 +12,6 @@ import interfaces.IDepthFirstSearchBridge;
 import interfaces.IEdge;
 import interfaces.IGraph;
 import interfaces.IVertex;
-import util.GraphPrintPresentationFactory;
 
 public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge>, Cloneable {
 
@@ -328,7 +327,8 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge>, Cloneable 
 	
 	@SuppressWarnings("unchecked")
 	public String toString(GraphPrintPresentation typePresentation){
-		return GraphPrintPresentationFactory.instance(typePresentation).mountGrafoToMessage(this);
+		return "error";
+		//return GraphPrintPresentationFactory.instance(typePresentation).mountGrafoToMessage(this);
 	}
 	
 	private String mountGrafoToMessage(boolean withData) {

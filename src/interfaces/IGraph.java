@@ -2,7 +2,6 @@ package interfaces;
 
 import java.util.Set;
 
-import algorithms.DepthFirstSearchBridge;
 import enums.GraphPrintPresentation;
 import exceptions.InvalidEdgeException;
 import exceptions.InvalidVertexException;

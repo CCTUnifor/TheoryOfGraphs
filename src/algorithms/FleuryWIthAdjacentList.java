@@ -6,22 +6,27 @@ import java.util.List;
 import entities.GraphAdjacenteList;
 import entities.NoVertex;
 import exceptions.IllegalGraphFormatException;
+import interfaces.IFleury;
 
-public class FleuryWIthAdjacentList {
-	
-	private GraphAdjacenteList originalGraph;
-	private List<NoVertex> eulerianTourSequence;
+public class FleuryWIthAdjacentList extends IFleury {
+
 	
 	public FleuryWIthAdjacentList(GraphAdjacenteList graph) {
 		this.originalGraph = graph.clone();
 		this.eulerianTourSequence = new ArrayList<NoVertex>();
 	}
 	
+
+	@Override
 	public List<NoVertex> search(NoVertex source) throws IllegalGraphFormatException{
 		
 		source = this.originalGraph.getVertex(source);
 		this.eulerianTourSequence.add(source);
 		int iteration = 0;
+		
+		// If this graph dont have any edges, return a Exception.
+		if (this.originalGraph.getAllAdjacents().size() == 0)
+			throw new IllegalGraphFormatException("Not Eulerian Graph");
 		
 		while (!(this.originalGraph.getAllAdjacents().size() == 0)){
 			
@@ -73,15 +78,6 @@ public class FleuryWIthAdjacentList {
 		this.originalGraph.removeEdge(edge.getAncestor(), edge);
 	}
 	
-	private void printEulerianSequence(){
-		System.out.print("[ " + this.eulerianTourSequence.iterator().next().getLabel());
-		
-		for (int i = 1; i < this.eulerianTourSequence.size(); i++) {
-			NoVertex no = this.eulerianTourSequence.get(i);
-			System.out.print(String.format(" -> %s", no.getLabel()));
-		}
-		
-		System.out.print(" ]\n\n");
-	}
+	
 	
 }

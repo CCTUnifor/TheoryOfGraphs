@@ -5,11 +5,13 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import algorithms.PrimMinimalSpanningTree;
+import entities.GraphAdjacenteList;
 import exceptions.IllegalGraphFormatException;
 import exceptions.InvalidEdgeException;
 import exceptions.InvalidVertexException;
 import interfaces.IGraph;
 import interfaces.IMinimalSpanningTree;
+import util.ConvertGraphAdjacent;
 import util.ConvertsGraph;
 
 public class Quest02 {
@@ -46,7 +48,30 @@ public class Quest02 {
 	private static boolean executeIsMST(String superGraphPath, String subGraphPath)
 			throws IOException, InvalidVertexException, InvalidEdgeException, IllegalGraphFormatException {
 
-		ConvertsGraph<Integer, Integer> convert = new ConvertsGraph<Integer, Integer>();
+		ConvertGraphAdjacent convert = new ConvertGraphAdjacent();
+		
+		GraphAdjacenteList superGraph = null;
+		GraphAdjacenteList subGraph = null;
+		
+		try {
+			superGraph = convert.converter(superGraphPath);
+			subGraph = convert.converter(subGraphPath);
+		} catch (IOException e) {
+			throw new IOException("Não foi possível encontrar os arquivos");
+		}
+		
+		System.out.println("Super-Graph Converted to .txt from Computational Representation\n");
+		System.out.println(superGraph.toString());
+
+		System.out.println("Sub-Graph Converted to .txt from Computational Representation\n");
+		System.out.println(subGraph.toString());
+		
+		/*IMinimalSpanningTree<Integer, Integer> MST = new PrimMinimalSpanningTree<Integer, Integer>(superGraph);
+		MST.search();
+
+		return MST.isMinimalSpanningTree(subGraph);*/
+		
+		/*ConvertsGraph<Integer, Integer> convert = new ConvertsGraph<Integer, Integer>();
 
 		IGraph<Integer, Integer> superGraph = null;
 		IGraph<Integer, Integer> subGraph = null;
@@ -66,7 +91,7 @@ public class Quest02 {
 		IMinimalSpanningTree<Integer, Integer> MST = new PrimMinimalSpanningTree<Integer, Integer>(superGraph);
 		MST.search();
 
-		return MST.isMinimalSpanningTree(subGraph);
+		return MST.isMinimalSpanningTree(subGraph);*/
 	}
 
 	private static File[] allGraphsToChose() {

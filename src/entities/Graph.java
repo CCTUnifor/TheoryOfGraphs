@@ -4,11 +4,9 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import algorithms.DepthFirstSearchBridge;
 import enums.GraphPrintPresentation;
 import exceptions.InvalidEdgeException;
 import exceptions.InvalidVertexException;
-import interfaces.IDepthFirstSearchBridge;
 import interfaces.IEdge;
 import interfaces.IGraph;
 import interfaces.IVertex;
@@ -93,7 +91,7 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge>, Cloneable 
 	}
 
 	@Override
-	public boolean removeVertex(IVertex<TVertex> vertexToRemove) throws InvalidVertexException {
+	public boolean removeVertex(IVertex<TVertex> vertexToRemove) {
 		if (this.containsVertex(vertexToRemove)) {
 			this.vertexs.remove(vertexToRemove);
 			return true;
@@ -143,14 +141,14 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge>, Cloneable 
 	}
 
 	@Override
-	public IEdge<VEdge> getEdge(IVertex<TVertex> source, IVertex<TVertex> destination){
+	public IEdge<VEdge> getEdge(IVertex<TVertex> source, IVertex<TVertex> destination) {
 		for (IEdge<VEdge> iEdge : this.getAllEdge()) {
 			if (iEdge.getSource().equals(source) && iEdge.getDestination().equals(destination))
 				return iEdge;
 		}
 		return null;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public Set<IEdge<VEdge>> getAllEdge() {
@@ -170,11 +168,11 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge>, Cloneable 
 	public Set<IEdge<VEdge>> getAllEdge(IVertex<TVertex> vertexTarget) throws InvalidVertexException {
 		Set<IEdge<VEdge>> allEdge = new LinkedHashSet<IEdge<VEdge>>();
 		IVertex<TVertex> vertex = this.getVertex(vertexTarget);
-		
+
 		for (IEdge<?> iEdge : vertex.getAllEdge()) {
-			allEdge.add((IEdge<VEdge>)iEdge);
+			allEdge.add((IEdge<VEdge>) iEdge);
 		}
-		
+
 		return allEdge;
 	}
 
@@ -224,7 +222,7 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge>, Cloneable 
 	}
 
 	@Override
-	public boolean removeAllEdge(){
+	public boolean removeAllEdge() {
 
 		for (IVertex<TVertex> iVertex : vertexs) {
 			boolean isRemoved = this.removeAllEdge(iVertex);
@@ -239,7 +237,7 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge>, Cloneable 
 
 	@Override
 	public boolean removeAllEdge(IVertex<TVertex> vertextTarget) {
-		//this.verify(vertextTarget);
+		// this.verify(vertextTarget);
 		return this.getVertex(vertextTarget).removeAllEdge();
 	}
 
@@ -304,49 +302,50 @@ public class Graph<TVertex, VEdge> implements IGraph<TVertex, VEdge>, Cloneable 
 	}
 
 	@Override
-	public boolean isBridge(IEdge<VEdge> edgeTarget)
-			throws InvalidEdgeException, InvalidVertexException {
+	public boolean isBridge(IEdge<VEdge> edgeTarget) throws InvalidEdgeException, InvalidVertexException {
 
-		IDepthFirstSearchBridge<TVertex, VEdge> _search = new DepthFirstSearchBridge<TVertex, VEdge>(this.clone());
-
-		return _search.isBridge(edgeTarget);
+		// IDepthFirstSearchBridge<TVertex, VEdge> _search = new
+		// DepthFirstSearchBridge<TVertex, VEdge>(this.clone());
+		return false;
+		// return _search.isBridge(edgeTarget);
 
 	}
-	
+
 	@Override
 	public String toString() {
 		return this.mountGrafoToMessage(false);
 	}
-	
+
 	@Override
 	public String toString(boolean withData) {
-		
+
 		return this.mountGrafoToMessage(withData);
-		
+
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public String toString(GraphPrintPresentation typePresentation){
+	public String toString(GraphPrintPresentation typePresentation) {
 		return "error";
-		//return GraphPrintPresentationFactory.instance(typePresentation).mountGrafoToMessage(this);
+		// return
+		// GraphPrintPresentationFactory.instance(typePresentation).mountGrafoToMessage(this);
 	}
-	
+
 	private String mountGrafoToMessage(boolean withData) {
-		
+
 		String message = "";
-		
+
 		for (IVertex<TVertex> iVertex : vertexs) {
-			
+
 			message += String.format("%s => {", iVertex.toString(withData));
-			
+
 			for (IEdge<?> iEdge : iVertex.getAllEdge()) {
-				
+
 				if (withData) {
 					message += String.format(" ((%s)[%s])", iEdge.getDestination().toString(withData), iEdge.getData());
 				} else {
 					message += String.format(" %s", iEdge.getDestination());
 				}
-				
+
 			}
 			message += " }\n";
 		}

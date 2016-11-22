@@ -58,11 +58,11 @@ public class PrimMinimalSpanningTree<V, Ed> implements IMinimalSpanningTree<V, E
 				System.out.println(String.format("  Vertex destination: (%s)[%s]", adj.toString(), adj.getWidth()));
 				
 				if (this.heapMin.isExists(adj) && Integer.parseInt(iEdge.getData().toString()) < adj.getWidth()) {
+					
 					int value = Integer.parseInt(iEdge.getData().toString());
 					adj.setWidth(Integer.parseInt(iEdge.getData().toString()));
 					adj.setAncestor(vertexMin);
 					this.heapMin.insert(adj.getWidth(), adj);
-					//this.heapMin.rebuildHeap();
 					
 					System.out.println(String.format("  Destination changed: %s[%s]", adj.toString(), adj.getWidth()));
 				}

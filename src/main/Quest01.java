@@ -4,15 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
-import algorithms.Fleury;
-import entities.V;
+import algorithms.FleuryWIthAdjacentList;
+import entities.GraphAdjacenteList;
+import entities.NoVertex;
 import exceptions.IllegalGraphFormatException;
-import exceptions.InvalidEdgeException;
-import exceptions.InvalidVertexException;
 import interfaces.IFleury;
-import interfaces.IGraph;
-import interfaces.IVertex;
-import util.ConvertsGraph;
+import util.ConvertGraphAdjacent;
 
 public class Quest01 {
 	
@@ -41,10 +38,10 @@ public class Quest01 {
 		executeFleury(filePath);
 	}
 	
-	private static void executeFleury(String filePath) throws IOException, IllegalGraphFormatException, InvalidVertexException, InvalidEdgeException {
+	private static void executeFleury(String filePath) throws IOException {
 		
-		ConvertsGraph<Integer, Integer> convert = new ConvertsGraph<Integer, Integer>();
-		IGraph<Integer, Integer> graph = null;
+		ConvertGraphAdjacent convert = new ConvertGraphAdjacent();
+		GraphAdjacenteList graph = null;
 		
 		try {
 			graph = convert.converter(filePath);
@@ -54,11 +51,11 @@ public class Quest01 {
 		}
 		
 		System.out.println("Graph Converted to .txt from Computational Representation\n");
-		System.out.println(graph.toString(false));
+		System.out.println(graph.toString());
 		
-		IFleury<Integer, Integer> fleury = new Fleury<Integer, Integer>(graph);
+		IFleury fleury = new FleuryWIthAdjacentList(graph);
 		
-		IVertex<Integer> u = new V<Integer>("0");
+		NoVertex u = new NoVertex("0");
 		
 		try {
 			fleury.search(u);

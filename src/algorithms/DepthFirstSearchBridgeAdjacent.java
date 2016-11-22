@@ -8,7 +8,6 @@ public class DepthFirstSearchBridgeAdjacent {
 
 	private int time;
 	private int numberConnectedComponent;
-	//private GraphAdjacenteList graphAux;
 	private GraphAdjacenteList graph;
 	
 
@@ -55,6 +54,20 @@ public class DepthFirstSearchBridgeAdjacent {
 		}
 		source.setColor(Colors.BLACK);
 		source.setTimeFinish(++time);
+	}
+	
+	public int getNumberConnectedComponent(){
+		
+		for (NoVertex vertex : this.graph.getAllVertex()) {
+			if (vertex.getColor() == Colors.WHITE){
+				this.numberConnectedComponent++;
+				
+				this.runDFS(vertex);
+			}
+		}
+		
+		return this.numberConnectedComponent;
+		
 	}
 	
 }

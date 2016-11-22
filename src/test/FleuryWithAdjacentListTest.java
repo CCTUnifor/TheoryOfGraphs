@@ -37,7 +37,7 @@ public class FleuryWithAdjacentListTest {
 			IllegalGraphFormatException, InvalidEdgeException {
 
 		ConvertGraphAdjacent convert = new ConvertGraphAdjacent();
-		GraphAdjacenteList graph = convert.converter(namePath);
+		GraphAdjacenteList graph = convert.convert(namePath);
 
 		System.out.println("Graph Converted to .txt from Computational Representation\n");
 		System.out.println(graph.toString());

@@ -54,7 +54,11 @@ public class NoVertex {
 	}
 	
 	public boolean isAdjacent(NoVertex destination){
-		return this.listAdjacente.stream().filter(x -> x.equals(destination)).findFirst() != null;
+		for (NoVertex noVertex : listAdjacente) {
+			if(noVertex.equals(destination))
+				return true;
+		}
+		return false;
 	}
 	
 	public boolean isLeaf(){
@@ -63,6 +67,12 @@ public class NoVertex {
 	
 	public int getDegree(){
 		return this.listAdjacente.size();
+	}
+	
+	@Override
+	public NoVertex clone(){
+		NoVertex cloned = new NoVertex(this.label, this.widthEdge, this.widthEdge);
+		return cloned;
 	}
 	
 	@Override

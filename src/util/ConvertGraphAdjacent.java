@@ -6,13 +6,22 @@ import java.io.IOException;
 
 import entities.GraphAdjacenteList;
 import entities.NoVertex;
+import interfaces.IConvertGraph;
 
-public class ConvertGraphAdjacent {
-	public GraphAdjacenteList converter(String caminhoArquivo) throws IOException {
+/**
+ * Implementing of IConvertGraph. <p>
+ * Taking a specific .txt file and convert this content from a Graph with Adjacent List Computation Representation. 
+ * 
+ * @author Thiago Maia
+ *
+ */
+public class ConvertGraphAdjacent implements IConvertGraph {
+	
+	public GraphAdjacenteList convert(String path) throws IOException {
 
 		GraphAdjacenteList graph = new GraphAdjacenteList();
 
-		FileReader arq = new FileReader(caminhoArquivo);
+		FileReader arq = new FileReader(path);
 		BufferedReader lerArq = new BufferedReader(arq);
 
 		String linha = lerArq.readLine();

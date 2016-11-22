@@ -28,6 +28,18 @@ public class HeapMin<Key extends Number, Value> implements IHeapMin<Key, Value> 
 
 		this.rebuildHeap();
 	}
+	
+	@Override
+	public void update(Key key, Value value) {
+		NoHeap<Key, Value> no = this.find(value);
+		
+		if (no != null){
+			no.setKey(key);
+			no.setValue(value);
+		}
+		
+		this.rebuildHeap();
+	}
 
 	@Override
 	public Value remove() {

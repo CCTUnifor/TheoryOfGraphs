@@ -4,19 +4,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
-import algorithms.PrimMinimalSpanningTree;
+import algorithms.Prim;
 import entities.GraphAdjacenteList;
 import exceptions.IllegalGraphFormatException;
-import exceptions.InvalidEdgeException;
-import exceptions.InvalidVertexException;
-import interfaces.IGraph;
-import interfaces.IMinimalSpanningTree;
+import interfaces.IConvertGraph;
 import util.ConvertGraphAdjacent;
-import util.ConvertsGraph;
 
 public class Quest02 {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		Scanner scanner = new Scanner(System.in);
 
 		System.out.println(
@@ -40,22 +36,22 @@ public class Quest02 {
 		try {
 			executeIsMST(fileSuperGraph.getPath(), fileSubGraph.getPath());
 			System.out.print("\nThis sub-graph is a Minimal Spanning Tree from this super-graph?\nTrue");
-		} catch (IOException | InvalidVertexException | InvalidEdgeException | IllegalGraphFormatException e) {
+		} catch (IllegalGraphFormatException e) {
 			System.out.print("\nThis sub-graph is a Minimal Spanning Tree from this super-graph?\nFalse");
 		}
 	}
 
 	private static boolean executeIsMST(String superGraphPath, String subGraphPath)
-			throws IOException, InvalidVertexException, InvalidEdgeException, IllegalGraphFormatException {
+			throws IOException, IllegalGraphFormatException {
 
-		ConvertGraphAdjacent convert = new ConvertGraphAdjacent();
+		IConvertGraph convert = new ConvertGraphAdjacent();
 		
 		GraphAdjacenteList superGraph = null;
 		GraphAdjacenteList subGraph = null;
 		
 		try {
-			superGraph = convert.converter(superGraphPath);
-			subGraph = convert.converter(subGraphPath);
+			superGraph = convert.convert(superGraphPath);
+			subGraph = convert.convert(subGraphPath);
 		} catch (IOException e) {
 			throw new IOException("Não foi possível encontrar os arquivos");
 		}
@@ -66,32 +62,10 @@ public class Quest02 {
 		System.out.println("Sub-Graph Converted to .txt from Computational Representation\n");
 		System.out.println(subGraph.toString());
 		
-		/*IMinimalSpanningTree<Integer, Integer> MST = new PrimMinimalSpanningTree<Integer, Integer>(superGraph);
-		MST.search();
-
-		return MST.isMinimalSpanningTree(subGraph);*/
+		Prim MST = new Prim(superGraph);
 		
-		/*ConvertsGraph<Integer, Integer> convert = new ConvertsGraph<Integer, Integer>();
-
-		IGraph<Integer, Integer> superGraph = null;
-		IGraph<Integer, Integer> subGraph = null;
-		try {
-			superGraph = convert.converter(superGraphPath);
-			subGraph = convert.converter(subGraphPath);
-		} catch (IOException e) {
-			throw new IOException("Não foi possível encontrar os arquivos");
-		}
-
-		System.out.println("Super-Graph Converted to .txt from Computational Representation\n");
-		System.out.println(superGraph.toString(false));
-
-		System.out.println("Sub-Graph Converted to .txt from Computational Representation\n");
-		System.out.println(subGraph.toString(false));
-
-		IMinimalSpanningTree<Integer, Integer> MST = new PrimMinimalSpanningTree<Integer, Integer>(superGraph);
-		MST.search();
-
-		return MST.isMinimalSpanningTree(subGraph);*/
+		return MST.isMinimalSpanningTree(subGraph);
+		
 	}
 
 	private static File[] allGraphsToChose() {

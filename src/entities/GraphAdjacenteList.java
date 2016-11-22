@@ -5,6 +5,12 @@ import java.util.Set;
 
 import algorithms.DepthFirstSearchBridgeAdjacent;
 
+/**
+ * Graph Adjacent List Computation Representation.
+ * 
+ * @author Thiago Maia
+ *
+ */
 public class GraphAdjacenteList {
 	
 	private Set<NoVertex> vertexs;
@@ -14,7 +20,11 @@ public class GraphAdjacenteList {
 	}
 	
 	public NoVertex getVertex(NoVertex vertexTarget){
-		return this.vertexs.stream().filter(x -> x.equals(vertexTarget)).findFirst().orElse(null);
+		for (NoVertex noVertex : vertexs) {
+			if (noVertex.equals(vertexTarget))
+				return noVertex;
+		}
+		return null;
 	}
 	
 	public boolean isEmpty(){

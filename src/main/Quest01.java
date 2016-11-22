@@ -8,6 +8,7 @@ import algorithms.FleuryWIthAdjacentList;
 import entities.GraphAdjacenteList;
 import entities.NoVertex;
 import exceptions.IllegalGraphFormatException;
+import interfaces.IConvertGraph;
 import interfaces.IFleury;
 import util.ConvertGraphAdjacent;
 
@@ -40,11 +41,11 @@ public class Quest01 {
 	
 	private static void executeFleury(String filePath) throws IOException {
 		
-		ConvertGraphAdjacent convert = new ConvertGraphAdjacent();
+		IConvertGraph convert = new ConvertGraphAdjacent();
 		GraphAdjacenteList graph = null;
 		
 		try {
-			graph = convert.converter(filePath);
+			graph = convert.convert(filePath);
 		} catch (IOException e) {
 			System.out.println("Não foi possível encontrar esse arquivo.");
 			throw new IOException();

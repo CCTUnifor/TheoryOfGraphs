@@ -16,24 +16,27 @@ public interface IMST {
 	 * width value and update then from HeapMin. 
 	 * 
 	 * @return The Graph result.
-	 */
-	GraphAdjacenteList search();
-	
-	/**
-	 * 	 
-	 * 
-	 * @return The sum of the all width edges the Minimal Spanning Tree result.
-	 */
-	int getValueMST();
-	
-	
-	/**
-	 * 
-	 * 
-	 * @param subGraph
-	 * @return
 	 * @throws IllegalGraphFormatException
 	 */
-	boolean isMinimalSpanningTree(GraphAdjacenteList subGraph) throws IllegalGraphFormatException;
+	public GraphAdjacenteList search() throws IllegalGraphFormatException;
+	
+	/**
+	 * @return The sum of the all width edges the Minimal Spanning Tree result.
+	 */
+	public int getValueMST();
+	
+	
+	/**
+	 * If the number of vertex in this subGraph is different from the superGraph, throw an IllegalGraphFormatException.
+	 * If the number of edge in this subGraph is 0(zero) or each edge is not a Bridge, throw an IllegalGraphFormatException. 
+	 * If this subGraph passed is disconnected, throw an IllegalGraphFormatException.<p>
+	 * 
+	 * Sum each edgeWidth from the subGraph edges and compare this sum with the sum resulted from the PRIM. If is equals, return True.
+	 * 
+	 * @param subGraph
+	 * @return Sum each edgeWidth from the subGraph edges and compare this sum with the sum resulted from the PRIM. If is equals, return True.
+	 * @throws IllegalGraphFormatException
+	 */
+	public boolean isMinimalSpanningTree(GraphAdjacenteList subGraph) throws IllegalGraphFormatException;
 	
 }

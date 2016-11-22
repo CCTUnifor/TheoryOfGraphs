@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.junit.Test;
 
 import entities.GraphAdjacenteList;
+import interfaces.IConvertGraph;
 import util.ConvertGraphAdjacent;
 
 public class ConvertGraphAdjacentTest {
@@ -14,9 +15,9 @@ public class ConvertGraphAdjacentTest {
 
 		String namePath = "Enter_Graphs/Graph01.txt";
 
-		ConvertGraphAdjacent convert = new ConvertGraphAdjacent();
+		IConvertGraph convert = new ConvertGraphAdjacent();
 
-		GraphAdjacenteList graph = convert.converter(namePath);
+		GraphAdjacenteList graph = convert.convert(namePath);
 
 		System.out.println(graph.toString());
 
@@ -27,9 +28,9 @@ public class ConvertGraphAdjacentTest {
 
 		String namePath = "Enter_Graphs/Graph02.txt";
 
-		ConvertGraphAdjacent convert = new ConvertGraphAdjacent();
+		IConvertGraph convert = new ConvertGraphAdjacent();
 
-		GraphAdjacenteList graph = convert.converter(namePath);
+		GraphAdjacenteList graph = convert.convert(namePath);
 
 		System.out.println(graph.toString());
 
@@ -40,9 +41,9 @@ public class ConvertGraphAdjacentTest {
 
 		String namePath = "Enter_Graphs/Graph04.txt";
 
-		ConvertGraphAdjacent convert = new ConvertGraphAdjacent();
+		IConvertGraph convert = new ConvertGraphAdjacent();
 
-		GraphAdjacenteList graph = convert.converter(namePath);
+		GraphAdjacenteList graph = convert.convert(namePath);
 
 		System.out.println(graph.toString());
 
@@ -53,9 +54,9 @@ public class ConvertGraphAdjacentTest {
 
 		String namePath = "Enter_Graphs/Graph05.txt";
 
-		ConvertGraphAdjacent convert = new ConvertGraphAdjacent();
+		IConvertGraph convert = new ConvertGraphAdjacent();
 
-		GraphAdjacenteList graph = convert.converter(namePath);
+		GraphAdjacenteList graph = convert.convert(namePath);
 
 		System.out.println(graph.toString());
 

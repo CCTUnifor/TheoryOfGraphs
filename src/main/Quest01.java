@@ -4,12 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
-import algorithms.FleuryWIthAdjacentList;
-import entities.GraphAdjacenteList;
+import algorithms.Fluery;
 import entities.NoVertex;
 import exceptions.IllegalGraphFormatException;
 import interfaces.IConvertGraph;
 import interfaces.IFleury;
+import interfaces.IGraph;
 import util.ConvertGraphAdjacent;
 
 public class Quest01 {
@@ -42,7 +42,7 @@ public class Quest01 {
 	private static void executeFleury(String filePath) throws IOException {
 		
 		IConvertGraph convert = new ConvertGraphAdjacent();
-		GraphAdjacenteList graph = null;
+		IGraph graph = null;
 		
 		try {
 			graph = convert.convert(filePath);
@@ -54,7 +54,7 @@ public class Quest01 {
 		System.out.println("Graph Converted to .txt from Computational Representation\n");
 		System.out.println(graph.toString());
 		
-		IFleury fleury = new FleuryWIthAdjacentList(graph);
+		IFleury fleury = new Fluery(graph);
 		
 		NoVertex u = new NoVertex("0");
 		

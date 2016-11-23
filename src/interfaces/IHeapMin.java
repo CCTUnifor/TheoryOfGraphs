@@ -1,5 +1,12 @@
 package interfaces;
 
+/**
+ * 
+ * @author Thiago Maia
+ *
+ * @param <Key>
+ * @param <Value>
+ */
 public interface IHeapMin<Key extends Number, Value> {
 	
 	/**

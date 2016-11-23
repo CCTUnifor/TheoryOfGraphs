@@ -2,7 +2,7 @@ package test;
 
 import org.junit.Test;
 
-import entities.GraphAdjacenteList;
+import entities.GraphListAdjacent;
 import entities.NoVertex;
 
 public class GraphAdjacenteListTeste {
@@ -10,7 +10,7 @@ public class GraphAdjacenteListTeste {
 	@Test
 	public void test() {
 		
-		GraphAdjacenteList graph = new GraphAdjacenteList();
+		GraphListAdjacent graph = new GraphListAdjacent();
 		
 		NoVertex A = new NoVertex("A", 10); 
 		NoVertex B = new NoVertex("B", 2);

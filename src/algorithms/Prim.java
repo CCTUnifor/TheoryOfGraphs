@@ -1,28 +1,35 @@
 package algorithms;
 
-import entities.GraphAdjacenteList;
+import entities.GraphListAdjacent;
 import entities.NoVertex;
 import exceptions.IllegalGraphFormatException;
+import interfaces.IGraph;
 import interfaces.IHeapMin;
-import interfaces.IMST;
+import interfaces.IMinimumSpanningTree;
 
-public class Prim implements IMST {
+/**
+ * Implementation of Prim's Algorithm using a Graph List Adjacent Representation. 
+ * 
+ * @author Thiago Maia
+ *
+ */
+public class Prim implements IMinimumSpanningTree {
 
-	private GraphAdjacenteList graph;
-	private GraphAdjacenteList resultMSTGraph;
-	private GraphAdjacenteList subGraph;
+	private IGraph graph;
+	private IGraph resultMSTGraph;
+	private IGraph subGraph;
 	private IHeapMin<Integer, NoVertex> heapMin;
 	private int valueMST;
 
-	public Prim(GraphAdjacenteList graph) {
+	public Prim(IGraph graph) {
 		this.graph = graph.clone();
-		this.resultMSTGraph = new GraphAdjacenteList();
+		this.resultMSTGraph = new GraphListAdjacent();
 		this.heapMin = new HeapMin<Integer, NoVertex>();
 		this.valueMST = 0;
 	}
 
 	@Override
-	public GraphAdjacenteList search() throws IllegalGraphFormatException {
+	public IGraph search() throws IllegalGraphFormatException {
 
 		this.addAllVertexToResultMSTGraph(); // Add all vertex in the Result Graph.
 		this.loadHeapMin(); // Loading the Heap Min.
@@ -75,7 +82,7 @@ public class Prim implements IMST {
 	}
 
 	@Override
-	public boolean isMinimalSpanningTree(GraphAdjacenteList subGraph) throws IllegalGraphFormatException {
+	public boolean isMinimalSpanningTree(IGraph subGraph) throws IllegalGraphFormatException {
 		
 		this.search(); // Execute the PRIM Algorithm.
 		this.subGraph = subGraph.clone();
@@ -95,7 +102,7 @@ public class Prim implements IMST {
 
 	private void verifyConnectedComponent() throws IllegalGraphFormatException {
 
-		DepthFirstSearchBridgeAdjacent dfs = new DepthFirstSearchBridgeAdjacent(this.subGraph);
+		DepthFirstSearchListAdjacent dfs = new DepthFirstSearchListAdjacent(this.subGraph);
 		int numberConnectedComponents = dfs.getNumberConnectedComponent();
 
 		if (numberConnectedComponents > 1)
@@ -109,7 +116,7 @@ public class Prim implements IMST {
 			throw new IllegalGraphFormatException("Is not a Minimal Spanning Tree");
 
 		for (NoVertex adj : this.subGraph.getAllAdjacents()) {
-			if (!this.subGraph.isBridge(adj))
+			if (!this.subGraph.isBridge(adj.getAncestor(), adj))
 				throw new IllegalGraphFormatException("Is not a Minimal Spanning Tree");
 
 		}

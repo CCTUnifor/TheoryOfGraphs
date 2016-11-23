@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import entities.GraphAdjacenteList;
+import entities.GraphListAdjacent;
 import interfaces.IConvertGraph;
 import util.ConvertGraphAdjacent;
 
@@ -17,7 +17,7 @@ public class ConvertGraphAdjacentTest {
 
 		IConvertGraph convert = new ConvertGraphAdjacent();
 
-		GraphAdjacenteList graph = convert.convert(namePath);
+		GraphListAdjacent graph = convert.convert(namePath);
 
 		System.out.println(graph.toString());
 
@@ -30,7 +30,7 @@ public class ConvertGraphAdjacentTest {
 
 		IConvertGraph convert = new ConvertGraphAdjacent();
 
-		GraphAdjacenteList graph = convert.convert(namePath);
+		GraphListAdjacent graph = convert.convert(namePath);
 
 		System.out.println(graph.toString());
 
@@ -43,7 +43,7 @@ public class ConvertGraphAdjacentTest {
 
 		IConvertGraph convert = new ConvertGraphAdjacent();
 
-		GraphAdjacenteList graph = convert.convert(namePath);
+		GraphListAdjacent graph = convert.convert(namePath);
 
 		System.out.println(graph.toString());
 
@@ -56,7 +56,7 @@ public class ConvertGraphAdjacentTest {
 
 		IConvertGraph convert = new ConvertGraphAdjacent();
 
-		GraphAdjacenteList graph = convert.convert(namePath);
+		GraphListAdjacent graph = convert.convert(namePath);
 
 		System.out.println(graph.toString());
 

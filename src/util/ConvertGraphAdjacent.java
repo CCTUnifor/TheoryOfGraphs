@@ -4,22 +4,24 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-import entities.GraphAdjacenteList;
+import entities.GraphListAdjacent;
 import entities.NoVertex;
 import interfaces.IConvertGraph;
 
 /**
- * Implementing of IConvertGraph. <p>
- * Taking a specific .txt file and convert this content from a Graph with Adjacent List Computation Representation. 
+ * <span style='font-size: 16px; font-weight: bold;'>
+ * 	Implementing of IConvertGraph. <p>
+ * 	Taking a specific .txt file and convert this content from a Graph with Adjacent List Computation Representation. 
+ * </span>
  * 
  * @author Thiago Maia
  *
  */
 public class ConvertGraphAdjacent implements IConvertGraph {
 	
-	public GraphAdjacenteList convert(String path) throws IOException {
+	public GraphListAdjacent convert(String path) throws IOException {
 
-		GraphAdjacenteList graph = new GraphAdjacenteList();
+		GraphListAdjacent graph = new GraphListAdjacent();
 
 		FileReader arq = new FileReader(path);
 		BufferedReader lerArq = new BufferedReader(arq);

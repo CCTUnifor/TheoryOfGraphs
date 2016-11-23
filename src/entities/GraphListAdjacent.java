@@ -3,19 +3,20 @@ package entities;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import algorithms.DepthFirstSearchBridgeAdjacent;
+import algorithms.DepthFirstSearchListAdjacent;
+import interfaces.IGraph;
 
 /**
- * Graph Adjacent List Computation Representation.
+ * Implementation of Graph using Adjacent List Computation Representation.
  * 
  * @author Thiago Maia
  *
  */
-public class GraphAdjacenteList {
+public class GraphListAdjacent implements IGraph {
 	
 	private Set<NoVertex> vertexs;
 	
-	public GraphAdjacenteList(){
+	public GraphListAdjacent(){
 		this.vertexs = new LinkedHashSet<NoVertex>();
 	}
 	
@@ -141,8 +142,8 @@ public class GraphAdjacenteList {
 	}
 	
 	@Override
-	public GraphAdjacenteList clone(){
-		GraphAdjacenteList newGraph = new GraphAdjacenteList();
+	public GraphListAdjacent clone(){
+		GraphListAdjacent newGraph = new GraphListAdjacent();
 		
 		for (NoVertex vertex : vertexs) {
 			newGraph.addVertex(new NoVertex(vertex.getLabel(), vertex.getWidth(), vertex.getWidthEdge()));
@@ -157,11 +158,11 @@ public class GraphAdjacenteList {
 		return newGraph;
 	}
 
-	public boolean isBridge(NoVertex destination) {
+	public boolean isBridge(NoVertex source, NoVertex destination) {
 		
-		DepthFirstSearchBridgeAdjacent DFS = new DepthFirstSearchBridgeAdjacent(this);
+		DepthFirstSearchListAdjacent DFS = new DepthFirstSearchListAdjacent(this);
 		
-		return DFS.isBridge(destination);
+		return DFS.isBridge(source, destination);
 	}
 	
 }

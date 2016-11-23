@@ -1,26 +1,26 @@
 package algorithms;
 
-import entities.GraphAdjacenteList;
 import entities.NoVertex;
 import enums.Colors;
+import interfaces.IGraph;
 
-public class DepthFirstSearchBridgeAdjacent {
+public class DepthFirstSearchListAdjacent {
 
 	private int time;
 	private int numberConnectedComponent;
-	private GraphAdjacenteList graph;
+	private IGraph graph;
 	
 
-	public DepthFirstSearchBridgeAdjacent(GraphAdjacenteList graph) {
+	public DepthFirstSearchListAdjacent(IGraph graph) {
 		this.graph = graph.clone();
 		time = 0;
 		numberConnectedComponent = 0;
 	}
 	
-	public boolean isBridge(NoVertex destination){
+	public boolean isBridge(NoVertex source, NoVertex destination){
 		
-		this.graph.removeEdge(destination.getAncestor(), destination);
-		this.graph.removeEdge(destination, destination.getAncestor());
+		this.graph.removeEdge(source, destination);
+		this.graph.removeEdge(destination, source);
 		
 		for (NoVertex vertex : this.graph.getAllVertex()) {
 			if (vertex.getColor() == Colors.WHITE){

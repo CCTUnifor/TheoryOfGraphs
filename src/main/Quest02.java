@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import algorithms.Prim;
-import entities.GraphAdjacenteList;
 import exceptions.IllegalGraphFormatException;
 import interfaces.IConvertGraph;
+import interfaces.IGraph;
 import util.ConvertGraphAdjacent;
 
 public class Quest02 {
@@ -46,8 +46,8 @@ public class Quest02 {
 
 		IConvertGraph convert = new ConvertGraphAdjacent();
 		
-		GraphAdjacenteList superGraph = null;
-		GraphAdjacenteList subGraph = null;
+		IGraph superGraph = null;
+		IGraph subGraph = null;
 		
 		try {
 			superGraph = convert.convert(superGraphPath);

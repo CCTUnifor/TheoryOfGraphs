@@ -73,6 +73,15 @@ public interface IGraph {
 	public Set<NoVertex> getAllAdjacents(NoVertex vertexTarget);
 	
 	/**
+	 * Verify if this two vertex are adjacent.
+	 * 
+	 * @param source
+	 * @param destination
+	 * @return {@code true} if are adjacent; {@code false} otherwise.
+	 */
+	public boolean areAdjacents(NoVertex source, NoVertex destination);
+	
+	/**
 	 * Add a Edge if this two Vertex exists in this Graph. The destination
 	 * NodeVertex contains the ancestor, source NodeVertex.
 	 * 
@@ -103,6 +112,14 @@ public interface IGraph {
 	public boolean removeEdge(NoVertex source, NoVertex destination);
 	
 	
+	/**
+	 * Get the edge reference.
+	 * 
+	 * @param source
+	 * @param destination
+	 * @return The Edge
+	 */
+	public NoVertex getEdge(NoVertex source, NoVertex destination);
 	
 	/**
 	 * Run the DepthFirstSearchListAdjacent and verify if this edge is Bridge.

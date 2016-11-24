@@ -116,7 +116,7 @@ public class Prim implements IMinimumSpanningTree {
 			throw new IllegalGraphFormatException("Is not a Minimal Spanning Tree");
 
 		for (NoVertex adj : this.subGraph.getAllAdjacents()) {
-			if (!this.subGraph.isBridge(adj.getAncestor(), adj))
+			if (!this.subGraph.isBridge(adj.getAncestor(), adj) || this.graph.getEdge(adj.getAncestor(), adj) == null)
 				throw new IllegalGraphFormatException("Is not a Minimal Spanning Tree");
 
 		}
